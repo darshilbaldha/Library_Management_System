@@ -35,6 +35,6 @@ describe("Book Tests", () => {
 
     expect(
       () => new Book(ISBN, "Dee", "Ian Goodfellow", publicationYear)
-    ).toThrow("Book title must be at least 4 characters long");
+    ).toThrow("Book Title must contain at least 4 characters");
   });
 });
