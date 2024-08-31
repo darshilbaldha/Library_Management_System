@@ -1,13 +1,8 @@
-class UnsupportedOperationException extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "UnsupportedOperationException";
-    }
-}
-
 class Library {
     constructor() {
-        throw new UnsupportedOperationException("Default constructor is not supported.");
+        if (arguments.length === 0) {
+            throw new Error("Library Can't be Created Without Name");
+        }
     }
 }
 
