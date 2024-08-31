@@ -15,6 +15,9 @@ class Library {
             throw new Error("Constructor should be called with only one argument");
         }
     }
+    getName() {
+        return null;
+    }
 }
 
 export default Library;
