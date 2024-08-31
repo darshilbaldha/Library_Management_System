@@ -1,4 +1,4 @@
-import Book from "../src/assessment/incubyte/Book";
+import Book from "../../src/assessment/incubyte/book/Book";
 
 describe("Book Tests", () => {
   test("Book constructor should throw an error if no arguments are passed", () => {

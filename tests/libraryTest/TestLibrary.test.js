@@ -1,4 +1,4 @@
-import Library from "../src/assessment/incubyte/Library";
+import Library from "../../src/assessment/incubyte/library/Library";
 
 describe("Library Tests", () => {
   test("Library constructor should throw an error if no arguments are passed", () => {
@@ -27,6 +27,7 @@ describe("Library Tests", () => {
   test("Testing Initialization Of Object with getName Function", () => {
     const libName = "New Library";
     const lib = new Library(libName);
+    expect(lib).not.toBeNull();
     expect(lib.getName()).toBe(libName);
   });
 });
