@@ -1,19 +1,24 @@
 class LibraryFunctionalities {
+    // Abstract method
     addBook() {
-      // Method to add a book
+      throw new Error("Method 'addBook()' must be implemented.");
     }
   
+    // Abstract method
     borrowBook() {
-      // Method to borrow a book
+      throw new Error("Method 'borrowBook()' must be implemented.");
     }
   
+    // Abstract method
     returnBook() {
-      // Method to return a book
+      throw new Error("Method 'returnBook()' must be implemented.");
     }
   
+    // Abstract method
     showAvlBook() {
-      // Method to show available books
+      throw new Error("Method 'showAvlBook()' must be implemented.");
     }
   }
   
   export default LibraryFunctionalities;
+  
