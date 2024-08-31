@@ -1,4 +1,6 @@
 import Library from "../../src/assessment/incubyte/library/Library";
+import User from "../../src/assessment/incubyte/user/User"; 
+import Book from "../../src/assessment/incubyte/book/Book";
 
 describe("Library Tests", () => {
   test("Library constructor should throw an error if no arguments are passed", () => {
@@ -21,7 +23,7 @@ describe("Library Tests", () => {
   test("Library constructor should throw an error if multiple arguments are passed", () => {
     expect(
       () => new Library("New Library", "Gujarat University Library")
-    ).toThrow();
+    ).toThrow("Constructor should be called with only one argument");
   });
 
   test("Testing Initialization Of Object with getName Function", () => {
@@ -31,12 +33,20 @@ describe("Library Tests", () => {
     expect(lib.getName()).toBe(libName);
   });
 
-  test("Test That add Method accepts a book and a user who is adding the book", () => {
-    const libName = "Rollwala Library";
+  test("Test That add Method returns true when a new book is added to library", () => {
+    const libName = "New Library";
     const lib = new Library(libName);
 
-    // If you want to assert something, you would do it here.
-    // Example:
-    expect(lib).toBeDefined(); // Just an example; adjust based on actual functionality
+    const ISBN = [1234567890];
+    const publicationYear = new Date(2000, 0, 1); // JavaScript's Year.of equivalent
+    const testBook = new Book(
+      ISBN,
+      "Deep Learning",
+      "lan Goodfellow",
+      publicationYear
+    );
+
+    const usr = new User("Darshil");
+    expect(lib.addBook(testBook, usr)).toBe(true);
   });
 });

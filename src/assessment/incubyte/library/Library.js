@@ -22,6 +22,22 @@ class Library {
   getName() {
     return this.libName;
   }
+
+  addBook(book, usr) {
+    throw new Error("Method 'addBook' is not implemented");
+  }
+
+  borrowBook(usr) {
+    throw new Error("Method 'borrowBook' is not implemented");
+  }
+
+  returnBook(book, usr) {
+    throw new Error("Method 'returnBook' is not implemented");
+  }
+
+  showAvlBook() {
+    throw new Error("Method 'showAvlBook' is not implemented");
+  }
 }
 
 export default Library;
