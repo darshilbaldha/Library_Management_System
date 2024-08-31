@@ -16,13 +16,30 @@ class Book {
       this.authorName = args[2];
       this.publicationYear = args[3];
 
-      if (args[1]!== null && args[1].length < 4) {
+    //   Validation of Book title 
+      if (args[1] !== null && args[1].length < 4) {
         throw new Error(
           `Book Title must contain at least 4 characters { ${args[1]} }`
         );
       }
+    //   Validation of name of author
       if (args[2] !== null && args[2].length < 4) {
-        throw new Error(`Author Name must contain at least 4 characters { ${args[2]} }`);
+        throw new Error(
+          `Author Name must contain at least 4 characters { ${args[2]} }`
+        );
+      }
+      // Validate publication year
+      if (args[3] === null) {
+        throw new Error("Publication Year must not be null");
+      }
+      const currentYear = new Date().getFullYear();
+      if (args[3] <= 0) {
+        throw new Error("Publication Year must not be 0000 or less");
+      }
+      if (args[3] > currentYear) {
+        throw new Error(
+          `Publication Year must not be greater than current year (${currentYear})`
+        );
       }
     } else if (args.length > 4) {
       throw new Error(

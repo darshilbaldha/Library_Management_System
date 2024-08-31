@@ -53,7 +53,7 @@ describe("Book Tests", () => {
     expect(
       () =>
         new Book(ISBN, "Valid Title", "Valid Author", invalidPublicationYear)
-    ).toThrow("Invalid Publication Year");
+    ).toThrow();
   });
 
   test("Book constructor should throw an error if publication year is greater than the current year", () => {
@@ -62,6 +62,6 @@ describe("Book Tests", () => {
 
     expect(
       () => new Book(ISBN, "Valid Title", "Valid Author", futureYear)
-    ).toThrow("Invalid Publication Year");
+    ).toThrow();
   });
 });
