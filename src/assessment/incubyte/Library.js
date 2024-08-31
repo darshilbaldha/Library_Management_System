@@ -16,7 +16,7 @@ class Library {
         }
     }
     getName() {
-        return null;
+        return this.libName;
     }
 }
 
