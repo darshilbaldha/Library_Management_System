@@ -64,4 +64,17 @@ describe("Book Tests", () => {
       () => new Book(ISBN, "Valid Title", "Valid Author", futureYear)
     ).toThrow();
   });
+
+  test("Testing get methods of perfectly created Book Object", () => {
+    const ISBN = [1234567890];
+    const publicationYear = 2000;
+    const bookTitle = "Deep Learning";
+    const authorName = "Ian Goodfellow";
+    const testBook = new Book(ISBN, bookTitle, authorName, publicationYear);
+
+    expect(testBook.getISBN()).toEqual(ISBN);
+    expect(testBook.getBookTitle()).toEqual(bookTitle);
+    expect(testBook.getAuthorName()).toEqual(authorName);
+    expect(testBook.getPublicationYear()).toEqual(publicationYear);
+  });
 });
