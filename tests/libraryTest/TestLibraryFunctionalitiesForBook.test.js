@@ -13,6 +13,6 @@ describe("LibraryFunctionalitiesForBook Tests", () => {
     expect(testFunc.addBook(testBook, testUser)).toBe(true);
     expect(testFunc.borrowBook(testUser)).toBe(true);
     expect(testFunc.returnBook(testBook, testUser)).toBe(true);
-    expect(testFunc.showAvlBook()).toEqual([]);
+    expect(testFunc.getAvlBooks()).toEqual([]);
   });
 });

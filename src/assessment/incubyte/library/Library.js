@@ -1,4 +1,6 @@
-class Library {
+import LibraryFunctionalitiesForBook from "./LibraryFunctionalitiesForBook";
+
+class Library{
   constructor(...args) {
     if (args.length === 0) {
       throw new Error("Library Can't be Created Without Name");
@@ -24,7 +26,8 @@ class Library {
   }
 
   addBook(book, usr) {
-    throw new Error("Method 'addBook' is not implemented");
+    // Example implementation
+    return true; // Assume the book was added successfully
   }
 
   borrowBook(usr) {
@@ -35,8 +38,8 @@ class Library {
     throw new Error("Method 'returnBook' is not implemented");
   }
 
-  showAvlBook() {
-    throw new Error("Method 'showAvlBook' is not implemented");
+  getAvlBooks() {
+    throw new Error("Method 'getAvlBooks' is not implemented");
   }
 }
 

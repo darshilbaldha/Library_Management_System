@@ -15,8 +15,8 @@ class LibraryFunctionalitiesForBook {
     }
   
     // Abstract method
-    showAvlBook() {
-      throw new Error("Method 'showAvlBook()' must be implemented.");
+    getAvlBooks() {
+      throw new Error("Method 'getAvlBooks()' must be implemented.");
     }
   }
   

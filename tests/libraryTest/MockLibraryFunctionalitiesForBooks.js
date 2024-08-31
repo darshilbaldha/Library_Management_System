@@ -16,7 +16,7 @@ class MockLibraryFunctionalitiesForBook extends LibraryFunctionalitiesForBook {
     return true;
   }
 
-  showAvlBook() {
+  getAvlBooks() {
     // Mocking to return an empty array
     const bookList = [];
     return bookList;

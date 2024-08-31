@@ -1,5 +1,5 @@
 import Library from "../../src/assessment/incubyte/library/Library";
-import User from "../../src/assessment/incubyte/user/User"; 
+import User from "../../src/assessment/incubyte/user/User";
 import Book from "../../src/assessment/incubyte/book/Book";
 
 describe("Library Tests", () => {
@@ -33,20 +33,31 @@ describe("Library Tests", () => {
     expect(lib.getName()).toBe(libName);
   });
 
-  test("Test That add Method returns true when a new book is added to library", () => {
-    const libName = "New Library";
+  test("Test That addBook Method returns true when a new book is added to library", () => {
+    const libName = "New-Library";
     const lib = new Library(libName);
 
     const ISBN = [1234567890];
     const publicationYear = new Date(2000, 0, 1); // JavaScript's Year.of equivalent
     const testBook = new Book(
       ISBN,
-      "Deep Learning",
-      "lan Goodfellow",
+      "Web-Development",
+      "lan-goodfellow",
       publicationYear
     );
 
     const usr = new User("Darshil");
     expect(lib.addBook(testBook, usr)).toBe(true);
+  });
+
+  test("Test That getAvlBooks Method returns empty array when there are no books in the library", () => {
+    const libName = "New Library";
+    const lib = new Library(libName);
+
+    // Call getAvlBooks method
+    const avlBooks = lib.getAvlBooks();
+
+    // Assert that the result is an empty array
+    expect(avlBooks).toEqual([]);
   });
 });
