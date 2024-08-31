@@ -65,17 +65,16 @@ describe("Book Tests", () => {
     ).toThrow();
   });
 
-  test("Testing get methods of perfectly created Book Object", () => {
+  test('Testing toString method must not return null for a perfectly created object', () => {
     const ISBN = [1234567890];
     const publicationYear = 2000;
-    const bookTitle = "Deep Learning";
-    const authorName = "Ian Goodfellow";
-    const testBook = new Book(ISBN, bookTitle, authorName, publicationYear);
-
-    expect(testBook.getISBN()).toEqual(ISBN);
-    expect(testBook.getBookTitle()).toEqual(bookTitle);
-    expect(testBook.getAuthorName()).toEqual(authorName);
-    expect(testBook.getPublicationYear()).toEqual(publicationYear);
+    const bookTitle = 'Deep Learning';
+    const authorName = 'Darshil'; // Corrected the name typo
+  
+    const testBook1 = new Book(ISBN, bookTitle, authorName, publicationYear);
+  
+    // Test that the toString method returns a non-null value
+    expect(testBook1.toString()).not.toBeNull();
   });
 
   test("Testing equality and hash code contract for Book objects", () => {
@@ -93,7 +92,10 @@ describe("Book Tests", () => {
   // Check that the objects are equal based on the equality method
   expect(testBook1.equals(testBook2)).toBe(true); // Equality check
 
-  // Check that the objects are equal based on the equality operator
-  expect(testBook1.equals(testBook2)).toBe(true); // Equality operator
+  // Test getters
+  expect(testBook1.getISBN()).toEqual(ISBN);
+  expect(testBook1.getBookTitle()).toEqual(bookTitle);
+  expect(testBook1.getAuthorName()).toEqual(authorName);
+  expect(testBook1.getPublicationYear()).toEqual(publicationYear);
   });
 });
