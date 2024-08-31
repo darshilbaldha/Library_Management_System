@@ -1,0 +1,17 @@
+{
+  "name": "library_management",
+  "version": "1.0.0",
+  "description": "A simple library management system with tests",
+  "main": "src/Library.js",
+  "type": "module",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Darshil",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/preset-env": "^7.25.4",
+    "babel-jest": "^29.7.0",
+    "jest": "^29.7.0"
+  }
+}
