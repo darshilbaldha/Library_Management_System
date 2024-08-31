@@ -1,7 +1,8 @@
-import LibraryFunctionalitiesForBook from "./LibraryFunctionalitiesForBook";
+import LibraryFunctionalitiesForBook from "./LibraryFunctionalitiesForBook"; // Adjust the path as necessary
 
-class Library{
+class Library extends LibraryFunctionalitiesForBook {
   constructor(...args) {
+    super();
     if (args.length === 0) {
       throw new Error("Library Can't be Created Without Name");
     }
@@ -10,6 +11,7 @@ class Library{
       const libName = args[0];
       if (this.isNameValid(libName)) {
         this.libName = libName;
+        this.bookList = []; // Initialize the book list
       } else {
         throw new Error("Library name must be at least 4 characters long");
       }
@@ -17,6 +19,7 @@ class Library{
       throw new Error("Constructor should be called with only one argument");
     }
   }
+
   isNameValid(libName) {
     return libName !== null && libName.length >= 4;
   }
@@ -27,6 +30,7 @@ class Library{
 
   addBook(book, usr) {
     // Example implementation
+    // Here you might want to add additional logic
     return true; // Assume the book was added successfully
   }
 
@@ -39,7 +43,7 @@ class Library{
   }
 
   getAvlBooks() {
-    throw new Error("Method 'getAvlBooks' is not implemented");
+    return Object.freeze([...this.bookList]); // Return an immutable copy of the book list
   }
 }
 
