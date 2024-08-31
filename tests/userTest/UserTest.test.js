@@ -32,6 +32,7 @@ describe("User Tests", () => {
   });
 
 
+
   test("Testing initialization of object with functionalities", () => {
     const usrName = "Darshil";
     const testUser = new User(usrName);
