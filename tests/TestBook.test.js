@@ -45,4 +45,23 @@ describe("Book Tests", () => {
       () => new Book(ISBN, "Web Development", "Ian", publicationYear)
     ).toThrow("Author Name must contain at least 4 characters");
   });
+
+  test("Book constructor should throw an error if publication year is less than or equal to 0000", () => {
+    const ISBN = [1234567890];
+    const invalidPublicationYear = 0; // Assuming 0000 is represented as 0
+
+    expect(
+      () =>
+        new Book(ISBN, "Valid Title", "Valid Author", invalidPublicationYear)
+    ).toThrow("Invalid Publication Year");
+  });
+
+  test("Book constructor should throw an error if publication year is greater than the current year", () => {
+    const ISBN = [1234567890];
+    const futureYear = new Date().getFullYear() + 1;
+
+    expect(
+      () => new Book(ISBN, "Valid Title", "Valid Author", futureYear)
+    ).toThrow("Invalid Publication Year");
+  });
 });
