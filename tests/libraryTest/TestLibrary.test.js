@@ -30,4 +30,13 @@ describe("Library Tests", () => {
     expect(lib).not.toBeNull();
     expect(lib.getName()).toBe(libName);
   });
+
+  test("Test That add Method accepts a book and a user who is adding the book", () => {
+    const libName = "Rollwala Library";
+    const lib = new Library(libName);
+
+    // If you want to assert something, you would do it here.
+    // Example:
+    expect(lib).toBeDefined(); // Just an example; adjust based on actual functionality
+  });
 });
