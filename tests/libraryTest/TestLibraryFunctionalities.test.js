@@ -1,4 +1,4 @@
-import MockLibraryFunctionalities from "../src/assessment/libraryTest/MockLibraryFunctionalities";
+import MockLibraryFunctionalities from "./MockLibraryFunctionalities";
 
 describe("LibraryFunctionalities Tests", () => {
   test("initial Test For Methods defined in LibraryFunctionalities", () => {
