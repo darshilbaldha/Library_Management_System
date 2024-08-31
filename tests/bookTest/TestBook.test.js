@@ -73,7 +73,7 @@ describe("Book Tests", () => {
     const testBook = new Book(ISBN, bookTitle, authorName, publicationYear);
 
     expect(testBook.getISBN()).toEqual(ISBN);
-    expect(testBook.getBookTitle()).toEqual(bookTitle);Testing get methods of perfectly
+    expect(testBook.getBookTitle()).toEqual(bookTitle);
     expect(testBook.getAuthorName()).toEqual(authorName);
     expect(testBook.getPublicationYear()).toEqual(publicationYear);
   });
@@ -87,14 +87,13 @@ describe("Book Tests", () => {
     const testBook1 = new Book(ISBN, bookTitle, authorName, publicationYear);
     const testBook2 = new Book(ISBN, bookTitle, authorName, publicationYear);
 
-    // Check if testBook1 and testBook2 are equal
-    expect(testBook1).toEqual(testBook2);
-    
-    // Assuming your Book class overrides the `equals` method:
-    expect(testBook1.equals(testBook2)).toBe(true);
+  // Check that the references are not the same
+  expect(testBook1).not.toBe(testBook2); // Reference check
 
-    // Optionally, if you have a hashCode method, you can check it
-    // Assuming hashCode is implemented similarly in Book:
-    expect(testBook1.hashCode()).toBe(testBook2.hashCode());
+  // Check that the objects are equal based on the equality method
+  expect(testBook1.equals(testBook2)).toBe(true); // Equality check
+
+  // Check that the objects are equal based on the equality operator
+  expect(testBook1.equals(testBook2)).toBe(true); // Equality operator
   });
 });

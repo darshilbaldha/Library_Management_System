@@ -4,6 +4,10 @@ class Book {
       throw new Error("Book Can't be Created Without Initial Data");
     }
 
+    if (args[0] === undefined || args[1] === undefined || args[2] === undefined || args[3] === undefined) {
+      throw new Error("Book Can't be Created Without Initial Data");
+    }
+
     if (
       args.length === 4 &&
       Array.isArray(args[0]) &&
@@ -67,6 +71,28 @@ class Book {
   getPublicationYear() {
     return this.publicationYear;
   }
+  // Overriding equals method
+  equals(other) {
+    if (this === other) return true;
+    if (!(other instanceof Book)) return false;
+    return JSON.stringify(this.ISBN) === JSON.stringify(other.getISBN());
+  }
+
+  // Overriding hashCode method
+  hashCode() {
+    return JSON.stringify(this.ISBN).hashCode();
+  }
 }
+
+// Adding hashCode method to String prototype for hashCode implementation
+String.prototype.hashCode = function() {
+  let hash = 0;
+  for (let i = 0; i < this.length; i++) {
+    const character = this.charCodeAt(i);
+    hash = (hash << 5) - hash + character;
+    hash |= 0; // Convert to 32bit integer
+  }
+  return hash;
+};
 
 export default Book;
