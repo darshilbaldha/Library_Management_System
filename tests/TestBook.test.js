@@ -37,4 +37,12 @@ describe("Book Tests", () => {
       () => new Book(ISBN, "Dee", "Ian Goodfellow", publicationYear)
     ).toThrow("Book Title must contain at least 4 characters");
   });
+
+  test("Book constructor should throw an error if the author name is less than 4 characters", () => {
+    const ISBN = [1234567890];
+    const publicationYear = 2000;
+    expect(
+      () => new Book(ISBN, "Web Development", "Ian", publicationYear)
+    ).toThrow("Author Name must contain at least 4 characters");
+  });
 });
