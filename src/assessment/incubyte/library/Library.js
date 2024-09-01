@@ -90,6 +90,9 @@ class Library extends LibraryFunctionalitiesForBook {
   }
 
   returnBook(book, usr) {
+    if (!this.isValidBook(book) && !this.isValidUser(usr)) {
+      this.throwBothArgNotAvailableException("Both Parameters Are Either Null Or Invalid");
+    }
     if (!this.isValidUser(usr)) {
       this.throwInvalidUserException("User Parameter Is Either Null Or Invalid");
     }
