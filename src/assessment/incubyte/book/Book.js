@@ -4,7 +4,12 @@ class Book {
       throw new Error("Book Can't be Created Without Initial Data");
     }
 
-    if (args[0] === undefined || args[1] === undefined || args[2] === undefined || args[3] === undefined) {
+    if (
+      args[0] === undefined ||
+      args[1] === undefined ||
+      args[2] === undefined ||
+      args[3] === undefined
+    ) {
       throw new Error("Book Can't be Created Without Initial Data");
     }
 
@@ -75,17 +80,22 @@ class Book {
   equals(other) {
     if (this === other) return true;
     if (!(other instanceof Book)) return false;
-    return JSON.stringify(this.ISBN) === JSON.stringify(other.getISBN());
+    return JSON.stringify(this.ISBN) === JSON.stringify(other.ISBN);
   }
 
-  // Overriding hashCode method
   hashCode() {
-    return JSON.stringify(this.ISBN).hashCode();
+    return this.ISBN.reduce((acc, val) => acc + val, 0);
+  }
+
+  toString() {
+    return `Book [ISBN=${this.ISBN.toString()}, bookTitle=${
+      this.bookTitle
+    }, authorName=${this.authorName}, publicationYear=${this.publicationYear}]`;
   }
 }
 
 // Adding hashCode method to String prototype for hashCode implementation
-String.prototype.hashCode = function() {
+String.prototype.hashCode = function () {
   let hash = 0;
   for (let i = 0; i < this.length; i++) {
     const character = this.charCodeAt(i);

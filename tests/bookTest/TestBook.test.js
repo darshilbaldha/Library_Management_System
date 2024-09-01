@@ -65,16 +65,20 @@ describe("Book Tests", () => {
     ).toThrow();
   });
 
-  test('Testing toString method must not return null for a perfectly created object', () => {
+  test("Testing toString method must not return null for a perfectly created object", () => {
     const ISBN = [1234567890];
     const publicationYear = 2000;
-    const bookTitle = 'Deep Learning';
-    const authorName = 'Darshil'; // Corrected the name typo
-  
-    const testBook1 = new Book(ISBN, bookTitle, authorName, publicationYear);
-  
-    // Test that the toString method returns a non-null value
-    expect(testBook1.toString()).not.toBeNull();
+    const bookTitle = "Deep Learning";
+    const authorName = "Darshil"; // Corrected the name typo
+
+    const testBook = new Book(ISBN, bookTitle, authorName, publicationYear);
+
+    const expectedString = `Book [ISBN=${ISBN.toString()}, bookTitle=${bookTitle}, authorName=${authorName}, publicationYear=${publicationYear}]`;
+    // Check that toString does not return null
+    expect(testBook.toString()).not.toBeNull();
+
+    // Check that toString returns the expected string
+    expect(testBook.toString()).toBe(expectedString);
   });
 
   test("Testing equality and hash code contract for Book objects", () => {
@@ -86,16 +90,16 @@ describe("Book Tests", () => {
     const testBook1 = new Book(ISBN, bookTitle, authorName, publicationYear);
     const testBook2 = new Book(ISBN, bookTitle, authorName, publicationYear);
 
-  // Check that the references are not the same
-  expect(testBook1).not.toBe(testBook2); // Reference check
+    // Check that the references are not the same
+    expect(testBook1).not.toBe(testBook2); // Reference check
 
-  // Check that the objects are equal based on the equality method
-  expect(testBook1.equals(testBook2)).toBe(true); // Equality check
+    // Check that the objects are equal based on the equality method
+    expect(testBook1.equals(testBook2)).toBe(true); // Equality check
 
-  // Test getters
-  expect(testBook1.getISBN()).toEqual(ISBN);
-  expect(testBook1.getBookTitle()).toEqual(bookTitle);
-  expect(testBook1.getAuthorName()).toEqual(authorName);
-  expect(testBook1.getPublicationYear()).toEqual(publicationYear);
+    // Test getters
+    expect(testBook1.getISBN()).toEqual(ISBN);
+    expect(testBook1.getBookTitle()).toEqual(bookTitle);
+    expect(testBook1.getAuthorName()).toEqual(authorName);
+    expect(testBook1.getPublicationYear()).toEqual(publicationYear);
   });
 });
