@@ -164,8 +164,12 @@ class Library extends LibraryFunctionalitiesForBook {
 
   decrementBookCount(book) {
     const currentCount = this.bookContainer.get(book);
+    if (currentCount <= 0) {
+      throw new Error("Book count cannot be less than 0.");
+    }
     this.bookContainer.set(book, currentCount - 1);
   }
+  
 
   addBookToContainer(book) {
     this.bookContainer.set(book, 1);
@@ -186,29 +190,32 @@ class Library extends LibraryFunctionalitiesForBook {
   addBorrowEntry(book, usr) {
     let borrowedBookList = this.borrowedBooksRecord.get(usr);
     if (!borrowedBookList) {
-      borrowedBookList = new Array(this.MAX_BOOK_ALLOWED_TO_BORROW);
+      borrowedBookList = [];
       this.borrowedBooksRecord.set(usr, borrowedBookList);
     }
+  
+    if (borrowedBookList.length >= this.MAX_BOOK_ALLOWED_TO_BORROW) {
+      throw new BorrowLimitExceededException("Exceeded borrowing limit.");
+    }
+  
     borrowedBookList.push(book);
   }
+  
 
   isEligibleToBorrow(usr, book) {
     const borrowedBooks = this.borrowedBooksRecord.get(usr);
-
+  
     if (!borrowedBooks) {
-      return true;
+      return true; // New user or no books borrowed yet
     }
-
+  
     if (borrowedBooks.length >= this.MAX_BOOK_ALLOWED_TO_BORROW) {
-      return false;
+      return false; // Exceeded borrowing limit
     }
-
-    if (borrowedBooks.includes(book)) {
-      return false;
-    }
-
-    return true;
+  
+    return !borrowedBooks.includes(book); // Book should not be already borrowed
   }
+  
 
   throwInvalidUserException(errMsg) {
     throw new InvalidUserException(errMsg);
