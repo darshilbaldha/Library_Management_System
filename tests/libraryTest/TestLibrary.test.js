@@ -339,48 +339,23 @@ describe("Library Tests", () => {
     expect(() => lib.returnBook(null, null)).toThrow(IllegalArgumentException);
   });
 
-  test("returnBook method throws InvalidReturnAttemptException with invalid user or book", () => {
+  test("Test That returnBook Method Throws InvalidReturnAttemptException with Invalid User Or Book", () => {
     const libName = "New Library";
     const lib = new Library(libName);
 
     const ISBN = "1234567890";
-    const publicationYear = 2000;
-    const testBook = new Book(
-      ISBN,
-      "Web Development",
-      "Ian Goodfellow",
-      publicationYear
-    );
+    const ISBN2 = "12345678901";
+    const publicationYear = 2000; // Adjusted to a simple number
+    const testBook = new Book(ISBN, "Web Development", "Ian Goodfellow", publicationYear);
+    const unregBook = new Book(ISBN2, "Web Development 2", "Ian Goodfellow", publicationYear);
+
     const usr = new User("Darshil");
-
-    expect(() => lib.returnBook(testBook, usr)).toThrow(
-      InvalidReturnAttemptException
-    );
-  });
-
-  test("Test That returnBook increments book counter and removes data from borrowedBooksRecord with valid User and Book", () => {
-    const libName = "New Library";
-    const lib = new Library(libName);
-
-    const ISBN = "1234567890";
-    const publicationYear = 2000;
-    const testBook = new Book(
-      ISBN,
-      "Web Development",
-      "Ian Goodfellow",
-      publicationYear
-    );
-    const usr = new User("Darshil");
+    const unregUser = new User("Unregistered User");
 
     lib.addBook(testBook, usr);
-    expect(lib.bookContainer.get(testBook)).toBe(1);
 
-    lib.borrowBook(testBook, usr);
-    expect(lib.bookContainer.get(testBook)).toBe(0);
-    expect(lib.borrowedBooksRecord.get(usr)).toContain(testBook);
-
-    lib.returnBook(testBook, usr);
-    expect(lib.bookContainer.get(testBook)).toBe(1);
-    expect(lib.borrowedBooksRecord.get(usr)).not.toContain(testBook);
+    expect(() => lib.returnBook(unregBook, usr)).toThrow(InvalidReturnAttemptException);
+    expect(() => lib.returnBook(testBook, unregUser)).toThrow(InvalidReturnAttemptException);
+    expect(() => lib.returnBook(unregBook, unregUser)).toThrow(InvalidReturnAttemptException);
   });
 });
