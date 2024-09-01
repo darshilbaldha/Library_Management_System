@@ -6,6 +6,7 @@ import InvalidBookException from "../../src/assessment/incubyte/exception/Invali
 import InvalidUserException from "../../src/assessment/incubyte/exception/InvalidUserException";
 import LibraryInitialisationException from "../../src/assessment/incubyte/exception/LibraryInitialisationException";
 import IllegalArgumentException from "../../src/assessment/incubyte/exception/IllegalArgumentException";
+import BorrowLimitExceededException from "../../src/assessment/incubyte/exception/BorrowLimitExceededException";
 
 describe("Library Tests", () => {
   test("should throw LibraryInitialisationException with no arguments", () => {
@@ -276,31 +277,50 @@ describe("Library Tests", () => {
     expect(userCollection.has(otherUser)).toBe(false);
   });
 
-  test("borrowBook method keeps the log for a successful borrowing (logging user & book)", () => {
+  test("borrowBook method logs successful borrowing (logging user & book)", () => {
     const libName = "New Library";
     const lib = new Library(libName);
 
     const ISBN = "1234567890";
-    const publicationYear = 2000; // No need for Year.of() in JS
+    const publicationYear = 2000;
     const testBook = new Book(
       ISBN,
       "Web Development",
       "Ian Goodfellow",
       publicationYear
     );
-
     const usr = new User("Darshil");
+
     lib.addBook(testBook, usr);
     lib.borrowBook(testBook, usr);
 
-    // Get the log of borrowed books
-    const borrowedBooksRecord = lib.getBorrowedBooksRecord();
+    const borrowedBooksRecord = lib.getBorrowedBooksRecord(); // Assumes you have a getter for borrowedBooksRecord
 
-    // Check that the user is in the record
     expect(borrowedBooksRecord.has(usr)).toBe(true);
+    expect(borrowedBooksRecord.get(usr)).toContain(testBook);
+  });
+  test('borrowBook method limits the max borrowing numbers to specified value', () => {
+    const libName = "Rollwala Library";
+    const lib = new Library(libName);
 
-    // Check that the user has not borrowed the book (or that it's correctly logged)
-    const books = borrowedBooksRecord.get(usr) || [];
-    expect(books).not.toContain(testBook);
+    const ISBN = "1234567890";
+    const publicationYear = 2000;
+    const testBook = new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear);
+    const usr = new User("Biswojit");
+
+    const maxBooksAllowedToBorrow = lib.getMaxBooksAllowedToBorrow();
+    
+    // Add books to the library
+    for (let i = 0; i < maxBooksAllowedToBorrow + 2; i++) {
+      lib.addBook(testBook, usr);
+    }
+    
+    // Borrow books until the limit is reached
+    for (let i = 0; i < maxBooksAllowedToBorrow; i++) {
+      lib.borrowBook(testBook, usr);
+    }
+
+    // Expect an exception to be thrown when borrowing exceeds the limit
+    expect(() => lib.borrowBook(testBook, usr)).toThrow(BorrowLimitExceededException);
   });
 });
