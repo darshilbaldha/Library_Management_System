@@ -46,8 +46,7 @@ This project follows TDD principles to solve the kata problem. The solution is b
 	•	User Management: Manage library users effectively.[register users]
 
 
-### Clone the Repository
-
+### Setup instructions
 1. Open your terminal or command prompt.
 2. Run the following command to clone the repository:
 

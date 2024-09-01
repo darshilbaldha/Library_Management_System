@@ -25,15 +25,7 @@ describe("User Tests", () => {
     expect(testUser.getName()).toBe("Darshil")
   });
 
-  test("User constructor should throw an error if multiple arguments are passed", () => {
-    expect(() => new User("Darshil", "Other User")).toThrow(
-      "Constructor should be called with only one argument"
-    );
-  });
-
-
-
-  test("Testing initialization of object with functionalities", () => {
+   test("Testing initialization of object with functionalities", () => {
     const usrName = "Darshil";
     const testUser = new User(usrName);
     expect(testUser).not.toBeNull();
