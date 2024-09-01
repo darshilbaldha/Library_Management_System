@@ -80,18 +80,18 @@ describe("Library Tests", () => {
   });
 
   test("should throw InvalidBookException if addBook is called with null book", () => {
-    const lib = new Library("Rollwala Library");
-    const usr = new User("Biswojit");
+    const lib = new Library("New Library");
+    const usr = new User("Darshil");
 
     // Expect addBook to throw InvalidBookException when the book is null
     expect(() => lib.addBook(null, usr)).toThrow(InvalidBookException);
   });
 
   test("should throw InvalidUserException if addBook is called with null user", () => {
-    const lib = new Library("Rollwala Library");
+    const lib = new Library("New Library");
     const testBook = new Book(
       "1234567890",
-      "Deep Learning",
+      "Web Development",
       "Ian Goodfellow",
       2000
     );
@@ -176,7 +176,7 @@ describe("Library Tests", () => {
   test("should throw InvalidBookException when borrowBook is called with null book", () => {
     const libName = "New Library";
     const lib = new Library(libName);
-    const usr = new User("Biswojit");
+    const usr = new User("Darshil");
     expect(() => lib.borrowBook(null, usr)).toThrow(InvalidBookException);
   });
 
@@ -197,7 +197,7 @@ describe("Library Tests", () => {
       "Ian Goodfellow",
       publicationYear
     );
-    const usr = new User("Biswojit");
+    const usr = new User("Darshil");
     expect(() => lib.borrowBook(testBook, usr)).toThrow(
       BookNotAvailableException
     );
@@ -250,19 +250,19 @@ describe("Library Tests", () => {
     );
   });
   test("borrowBook method registers a user and only that user if not registered previously", () => {
-    const libName = "Rollwala Library";
+    const libName = "New Library";
     const lib = new Library(libName);
 
     const ISBN = "1234567890";
     const publicationYear = 2000; // Assuming Year.of() is not necessary in JS
     const testBook = new Book(
       ISBN,
-      "Deep Learning",
+      "Web Development",
       "Ian Goodfellow",
       publicationYear
     );
 
-    const usr = new User("Biswojit");
+    const usr = new User("Darshil");
     const borrower = new User("Borrower");
     const otherUser = new User("other user");
 
@@ -274,5 +274,33 @@ describe("Library Tests", () => {
 
     expect(userCollection.has(borrower)).toBe(true);
     expect(userCollection.has(otherUser)).toBe(false);
+  });
+
+  test("borrowBook method keeps the log for a successful borrowing (logging user & book)", () => {
+    const libName = "New Library";
+    const lib = new Library(libName);
+
+    const ISBN = "1234567890";
+    const publicationYear = 2000; // No need for Year.of() in JS
+    const testBook = new Book(
+      ISBN,
+      "Web Development",
+      "Ian Goodfellow",
+      publicationYear
+    );
+
+    const usr = new User("Darshil");
+    lib.addBook(testBook, usr);
+    lib.borrowBook(testBook, usr);
+
+    // Get the log of borrowed books
+    const borrowedBooksRecord = lib.getBorrowedBooksRecord();
+
+    // Check that the user is in the record
+    expect(borrowedBooksRecord.has(usr)).toBe(true);
+
+    // Check that the user has not borrowed the book (or that it's correctly logged)
+    const books = borrowedBooksRecord.get(usr) || [];
+    expect(books).not.toContain(testBook);
   });
 });

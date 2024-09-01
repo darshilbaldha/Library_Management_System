@@ -44,8 +44,8 @@ class Library extends LibraryFunctionalitiesForBook {
   }
 
   addBook(book, usr) {
-    if(!this.isValidBook(book) && !this.isValidUser(usr)){
-      this. throwBothArgNotAvailableException(
+    if (!this.isValidBook(book) && !this.isValidUser(usr)) {
+      this.throwBothArgNotAvailableException(
         "Both Parameters Is Either Null Or Invalid"
       );
     }
@@ -71,32 +71,37 @@ class Library extends LibraryFunctionalitiesForBook {
   }
 
   borrowBook(book, usr) {
-    if(!this.isValidBook(book) && !this.isValidUser(usr)){
-      this. throwBothArgNotAvailableException(
+    if (!this.isValidBook(book) && !this.isValidUser(usr)) {
+      this.throwBothArgNotAvailableException(
         "Both Parameters Is Either Null Or Invalid"
       );
     }
     if (!this.isValidUser(usr)) {
-      this.throwInvalidUserException("User Parameter Is Either Null Or Invalid");
+      this.throwInvalidUserException(
+        "User Parameter Is Either Null Or Invalid"
+      );
     }
     if (!this.isValidBook(book)) {
-      this.throwInvalidBookException("Book Parameter Is Either Null Or Invalid");
+      this.throwInvalidBookException(
+        "Book Parameter Is Either Null Or Invalid"
+      );
     }
-  
-    if (!this.doesBookHaveEntryInContainer(book)) {
+
+    // Check if the book is available to borrow
+    if (!this.isBookAvailableToBorrow(book)) {
       this.throwBookNotAvailableException(book);
     }
-  
-    const currBookCount = this.bookContainer.get(book);
-    if (currBookCount > 0) {
-      this.bookContainer.set(book, currBookCount - 1);
-      return true;
-    } else {
-      this.throwBookNotAvailableException(book);
+
+    // Register new user if necessary
+    if (this.isNewUser(usr)) {
+      this.registerNewUser(usr);
     }
-    return false;
+
+    // Decrement the book count
+    this.decrementBookCount(book);
+
+    return true;
   }
-  
 
   returnBook(book, usr) {
     throw new Error("Method 'returnBook' is not implemented");
