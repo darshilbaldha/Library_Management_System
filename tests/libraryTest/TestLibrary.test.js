@@ -184,4 +184,16 @@ describe("Library Tests", () => {
     expect(() => lib.borrowBook(null, null)).toThrow("Book and User must not be null");
   });
 
+  test("Borrow book method throws BookNotAvailableException when called with empty bookContainer", () => {
+    const libName = "New Library";
+    const lib = new Library(libName);
+
+    const ISBN = "1234567890";
+    const publicationYear = 2000;
+    const testBook = new Book(ISBN, "Web Development", "Ian Goodfellow", publicationYear);
+    const usr = new User("Darshil");
+
+    expect(() => lib.borrowBook(testBook, usr)).toThrow("Book and User must not be null");
+  });
+
 });
