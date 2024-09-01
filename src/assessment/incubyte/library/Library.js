@@ -195,6 +195,8 @@ class Library extends LibraryFunctionalitiesForBook {
       borrowedBooks === undefined ||
       borrowedBooks.length < this.MAX_BOOK_ALLOWED_TO_BORROW
     );
+
+    
   }
 
   throwInvalidUserException(errMsg) {
