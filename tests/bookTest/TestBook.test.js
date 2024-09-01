@@ -97,16 +97,22 @@ describe("Book Tests", () => {
   test("Book constructor with null ISBN should throw an error", () => {
     const publicationYear = 2000;
     expect(() => new Book(null, "Deep Learning", "Ian Goodfellow", publicationYear))
-      .toThrow("ISBN must be at least 10 characters long { null }");
+      .toThrow("ISBN must not be null");
   });
 
   test("Book constructor with ISBN length less than 10 should throw an error", () => {
     const ISBN = "1234567";
     const publicationYear = 2000;
     expect(() => new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear))
-      .toThrow("ISBN must be at least 10 characters long");
+      .toThrow(`ISBN must be at least 10 characters long { ${ISBN} }`);
   });
 
+  test("Book constructor with ISBN length less than 10 should throw an error", () => {
+    const ISBN = "12345678910112";
+    const publicationYear = 2000;
+    expect(() => new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear))
+      .toThrow(`ISBN length can be a maximum of 13 characters long { ${ISBN} }`);
+  });
 
   test("Get methods should work fine for a perfectly created Book object", () => {
     const ISBN = "1234567890";

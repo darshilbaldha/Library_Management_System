@@ -21,11 +21,13 @@ class Book {
 
   // Method to validate and raise appropriate errors
   checkParameterValidityAndRaiseAppropriateError() {
-    // Validation of ISBN
-    if (!this.ISBN || this.ISBN.length < 10) {
-      throw new Error(
-        `ISBN must be at least 10 characters long { ${this.ISBN} }`
-      );
+     // Check for null or invalid ISBN
+     if (this.ISBN === null) {
+      throw new Error("ISBN must not be null");
+    } else if (this.ISBN.length < 10) {
+      throw new Error(`ISBN must be at least 10 characters long { ${this.ISBN} }`);
+    } else if (this.ISBN.length > 13) {
+      throw new Error(`ISBN length can be a maximum of 13 characters long { ${this.ISBN} }`);
     }
     // Validation of Book title
     if (this.bookTitle === null || this.bookTitle.length < 4) {
