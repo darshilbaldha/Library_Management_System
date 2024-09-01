@@ -97,7 +97,7 @@ class Library extends LibraryFunctionalitiesForBook {
     if (!this.isBookAvailableToBorrow(book)) {
       this.throwBookNotAvailableException(book);
     }
-    if (!this.isEligibleToBorrow(usr)) {
+    if (!this.isEligibleToBorrow(usr,book)) {
       this.throwBorrowLimitExceededException(
         "You have Exceeded The Number Of Books Allowed To Borrow. Please Return Any Of Your Previous Books To Continue"
       );
@@ -189,15 +189,21 @@ class Library extends LibraryFunctionalitiesForBook {
   }
   
 
-  isEligibleToBorrow(usr) {
+  isEligibleToBorrow(usr, book) {
     const borrowedBooks = this.borrowedBooksRecord.get(usr);
-    return (
-      borrowedBooks === undefined ||
-      borrowedBooks.length < this.MAX_BOOK_ALLOWED_TO_BORROW
-    );
 
-    
-  }
+    if (!borrowedBooks) {
+        return true;
+    } 
+    if (borrowedBooks.length >= this.MAX_BOOK_ALLOWED_TO_BORROW) {
+        return false;
+    }
+    if (borrowedBooks.includes(book)) {
+        return false;
+    }
+    return true;
+}
+
 
   throwInvalidUserException(errMsg) {
     throw new InvalidUserException(errMsg);
