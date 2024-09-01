@@ -14,6 +14,7 @@ class Library extends LibraryFunctionalitiesForBook {
       if (this.isNameValid(libName)) {
         this.libName = libName;
         this.bookContainer = new Map(); // Initialize the book container
+        this.userCollection = new Set(); // For storing registered users
       } else {
         throw new Error("Library name must be at least 4 characters long");
       }
@@ -41,6 +42,7 @@ class Library extends LibraryFunctionalitiesForBook {
         this.bookContainer.set(book, currBookCount + 1);
       } else {
         this.bookContainer.set(book, 1);
+        this.userCollection.add(usr);
       }
 
       return true;
@@ -48,6 +50,8 @@ class Library extends LibraryFunctionalitiesForBook {
       // Handle exception
       return false;
     }
+
+   
   }
 
   borrowBook(usr) {
@@ -60,6 +64,10 @@ class Library extends LibraryFunctionalitiesForBook {
 
   getAvlBooks() {
     return Array.from(this.bookContainer.keys());
+  }
+
+  getRegisteredUsers() {
+    return this.userCollection;
   }
 }
 
