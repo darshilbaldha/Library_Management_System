@@ -249,4 +249,30 @@ describe("Library Tests", () => {
       BookNotAvailableException
     );
   });
+  test("borrowBook method registers a user and only that user if not registered previously", () => {
+    const libName = "Rollwala Library";
+    const lib = new Library(libName);
+
+    const ISBN = "1234567890";
+    const publicationYear = 2000; // Assuming Year.of() is not necessary in JS
+    const testBook = new Book(
+      ISBN,
+      "Deep Learning",
+      "Ian Goodfellow",
+      publicationYear
+    );
+
+    const usr = new User("Biswojit");
+    const borrower = new User("Borrower");
+    const otherUser = new User("other user");
+
+    expect(lib.addBook(testBook, usr)).toBe(true);
+    expect(lib.borrowBook(testBook, borrower)).toBe(true);
+
+    // Access private field (assuming you have a method to expose it)
+    const userCollection = lib.getRegisteredUsers(); // You need to implement this method if not available
+
+    expect(userCollection.has(borrower)).toBe(true);
+    expect(userCollection.has(otherUser)).toBe(false);
+  });
 });
