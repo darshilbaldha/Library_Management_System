@@ -7,6 +7,7 @@ import InvalidUserException from "../../src/assessment/incubyte/exception/Invali
 import LibraryInitialisationException from "../../src/assessment/incubyte/exception/LibraryInitialisationException";
 import IllegalArgumentException from "../../src/assessment/incubyte/exception/IllegalArgumentException";
 import BorrowLimitExceededException from "../../src/assessment/incubyte/exception/BorrowLimitExceededException";
+import InvalidReturnAttemptException from "../../src/assessment/incubyte/exception/InvalidReturnAttemptException";
 
 describe("Library Tests", () => {
   test("should throw LibraryInitialisationException with no arguments", () => {
@@ -299,36 +300,24 @@ describe("Library Tests", () => {
     expect(borrowedBooksRecord.has(usr)).toBe(true);
     expect(borrowedBooksRecord.get(usr)).toContain(testBook);
   });
-  test("borrowBook method limits the max borrowing numbers to specified value", () => {
+
+  test('borrowBook method limits the max borrowing numbers to specified value', () => {
     const libName = "New Library";
     const lib = new Library(libName);
-
+  
     const ISBN = "1234567890";
     const publicationYear = 2000;
-    const testBook = new Book(
-      ISBN,
-      "Web Development",
-      "Ian Goodfellow",
-      publicationYear
-    );
+    const testBook = new Book(ISBN, "Web Development", "Ian Goodfellow", publicationYear);
     const usr = new User("Darshil");
-
+  
     const maxBooksAllowedToBorrow = lib.getMaxBooksAllowedToBorrow();
-
-    // Add books to the library
     for (let i = 0; i < maxBooksAllowedToBorrow + 2; i++) {
       lib.addBook(testBook, usr);
     }
-
-    // Borrow books until the limit is reached
     for (let i = 0; i < maxBooksAllowedToBorrow; i++) {
       lib.borrowBook(testBook, usr);
     }
-
-    // Expect an exception to be thrown when borrowing exceeds the limit
-    expect(() => lib.borrowBook(testBook, usr)).toThrow(
-      BorrowLimitExceededException
-    );
+    expect(() => lib.borrowBook(testBook, usr)).toThrow(BorrowLimitExceededException);
   });
 
   test("returnBook method throws expected exceptions for invalid scenarios", () => {
@@ -350,15 +339,48 @@ describe("Library Tests", () => {
     expect(() => lib.returnBook(null, null)).toThrow(IllegalArgumentException);
   });
 
-  test('returnBook method throws InvalidReturnAttemptException with invalid user or book', () => {
-    const libName ="New Library";
+  test("returnBook method throws InvalidReturnAttemptException with invalid user or book", () => {
+    const libName = "New Library";
     const lib = new Library(libName);
-  
+
     const ISBN = "1234567890";
     const publicationYear = 2000;
-    const testBook = new Book(ISBN, "Web Development", "Ian Goodfellow", publicationYear);
+    const testBook = new Book(
+      ISBN,
+      "Web Development",
+      "Ian Goodfellow",
+      publicationYear
+    );
     const usr = new User("Darshil");
-  
-    expect(() => lib.returnBook(testBook, usr)).toThrow(InvalidReturnAttemptException);
+
+    expect(() => lib.returnBook(testBook, usr)).toThrow(
+      InvalidReturnAttemptException
+    );
+  });
+
+  test("Test That returnBook increments book counter and removes data from borrowedBooksRecord with valid User and Book", () => {
+    const libName = "New Library";
+    const lib = new Library(libName);
+
+    const ISBN = "1234567890";
+    const publicationYear = 2000;
+    const testBook = new Book(
+      ISBN,
+      "Web Development",
+      "Ian Goodfellow",
+      publicationYear
+    );
+    const usr = new User("Darshil");
+
+    lib.addBook(testBook, usr);
+    expect(lib.bookContainer.get(testBook)).toBe(1);
+
+    lib.borrowBook(testBook, usr);
+    expect(lib.bookContainer.get(testBook)).toBe(0);
+    expect(lib.borrowedBooksRecord.get(usr)).toContain(testBook);
+
+    lib.returnBook(testBook, usr);
+    expect(lib.bookContainer.get(testBook)).toBe(1);
+    expect(lib.borrowedBooksRecord.get(usr)).not.toContain(testBook);
   });
 });

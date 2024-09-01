@@ -1,8 +1,9 @@
 class BorrowLimitExceededException extends Error {
-    constructor(errMsg) {
-        super(errMsg);
-        this.name = 'BorrowLimitExceededException';
+    constructor(message) {
+      super(message);
+      this.name = "BorrowLimitExceededException";
     }
-}
-
-export default BorrowLimitExceededException;
+  }
+  
+  export default BorrowLimitExceededException;
+  
