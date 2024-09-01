@@ -5,7 +5,7 @@ class LibraryFunctionalitiesForBook {
   }
 
   // Abstract method for borrowing a book
-  borrowBook(book, usr) {
+  borrowBook(param, usr) {
     throw new Error("Method 'borrowBook()' must be implemented.");
   }
 

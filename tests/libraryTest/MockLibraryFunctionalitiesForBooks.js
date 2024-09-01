@@ -6,7 +6,7 @@ class MockLibraryFunctionalitiesForBook extends LibraryFunctionalitiesForBook {
     return true;
   }
 
-  borrowBook(book,usr) {
+  borrowBook(borrowBook,usr) {
     // Mocking to return true always
     return true;
   }
