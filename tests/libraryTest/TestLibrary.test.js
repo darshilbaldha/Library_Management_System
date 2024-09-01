@@ -358,4 +358,22 @@ describe("Library Tests", () => {
     expect(() => lib.returnBook(testBook, unregUser)).toThrow(InvalidReturnAttemptException);
     expect(() => lib.returnBook(unregBook, unregUser)).toThrow(InvalidReturnAttemptException);
   });
+
+  test("should allow only a single copy of any book to be borrowed by a single user", () => {
+    const libName = "New Library";
+    const lib = new Library(libName);
+
+    const ISBN = "1234567890";
+    const publicationYear = 2000; // Replace Year.of(2000) with a simple number for JavaScript
+    const testBook = new Book(ISBN, "Web Development", "Ian Goodfellow", publicationYear);
+
+    const usr = new User("Darshil");
+
+    lib.addBook(testBook, usr);
+    lib.addBook(testBook, usr);
+
+    lib.borrowBook(testBook, usr);
+    
+    expect(() => lib.borrowBook(testBook, usr)).toThrow(BorrowLimitExceededException);
+  });
 });
