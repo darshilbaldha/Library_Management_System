@@ -51,8 +51,12 @@ class Library extends LibraryFunctionalitiesForBook {
     }
   }
 
-  borrowBook(usr) {
-    throw new Error("Method 'borrowBook' is not implemented");
+  borrowBook(user) {
+    if (user === null) {
+      throw new Error("User must not be null");
+    } else {
+      return true;
+    }
   }
 
   returnBook(book, usr) {

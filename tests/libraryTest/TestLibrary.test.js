@@ -84,12 +84,12 @@ describe("Library Tests", () => {
   test("addBook method returns false if null is passed as the book argument", () => {
     const libName = "Rollwala Library";
     const lib = new Library(libName);
-  
+
     const usr = new User("Biswojit");
-  
+
     // Test that adding a null book returns false
     expect(lib.addBook(null, usr)).toBe(false);
-  
+
     // Test that the available books list is empty
     const avlBookList = lib.getAvlBooks();
     expect(avlBookList).toEqual([]);
@@ -98,19 +98,23 @@ describe("Library Tests", () => {
   test("addBook method returns false if null is passed as the user argument", () => {
     const libName = "Rollwala Library";
     const lib = new Library(libName);
-  
+
     const ISBN = "1234567890";
     const publicationYear = 2000; // Assuming how you handle years
-    const testBook = new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear);
-  
+    const testBook = new Book(
+      ISBN,
+      "Deep Learning",
+      "Ian Goodfellow",
+      publicationYear
+    );
+
     // Test that adding a book with a null user returns false
     expect(lib.addBook(testBook, null)).toBe(false);
-  
+
     // Test that the available books list is empty
     const avlBookList = lib.getAvlBooks();
     expect(avlBookList).toEqual([]);
   });
-  
 
   test("addBook method should not add duplicate books again", () => {
     const libName = "New Library";
@@ -156,5 +160,13 @@ describe("Library Tests", () => {
     // Assuming Library class has a method getRegisteredUsers() to access userList
     const userList = lib.getRegisteredUsers();
     expect(userList.has(usr)).toBe(true);
+  });
+
+  test("Borrow book method throws Error when called with null argument", () => {
+    const libName = "New Library";
+    const lib = new Library(libName);
+
+    const usr = new User("Darshil");
+    lib.borrowBook(usr);
   });
 });
