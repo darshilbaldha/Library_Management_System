@@ -10,6 +10,7 @@ import IllegalArgumentException from "../exception/IllegalArgumentException";
 class Library extends LibraryFunctionalitiesForBook {
   constructor(...args) {
     super();
+
     if (args.length === 0) {
       throw new LibraryInitialisationException(
         "Can't Create Library Without Name Parameter"
@@ -27,9 +28,9 @@ class Library extends LibraryFunctionalitiesForBook {
           "Library name must be at least 4 characters long"
         );
       }
-    } else if (args.length > 1) {
+    } else {
       throw new LibraryInitialisationException(
-        "Library Constructor should be called with exactly one argument(i:e Library name)"
+        "Library Constructor should be called with exactly one argument (i.e., Library name)"
       );
     }
   }
@@ -43,30 +44,112 @@ class Library extends LibraryFunctionalitiesForBook {
   }
 
   addBook(book, usr) {
-    if (this.isValidUser(usr) && this.isValidBook(book)) {
-      if (this.doesBookHaveEntryInContainer(book)) {
-        const currBookCount = this.bookContainer.get(book);
-        this.bookContainer.set(book, currBookCount + 1);
-        return true;
-      } else {
-        this.bookContainer.set(book, 1);
-        this.userCollection.add(usr);
-        return true;
-      }
+    if(!this.isValidBook(book) && !this.isValidUser(usr)){
+      this. throwBothArgNotAvailableException(
+        "Both Parameters Is Either Null Or Invalid"
+      );
+    }
+    if (!this.isValidUser(usr)) {
+      this.throwInvalidUserException(
+        "User Parameter Is Either Null Or Invalid"
+      );
+    }
+    if (!this.isValidBook(book)) {
+      this.throwInvalidBookException(
+        "Book Parameter Is Either Null Or Invalid"
+      );
+    }
+    if (this.isNewUser(usr)) {
+      this.registerNewUser(usr);
+    }
+    if (this.doesBookHaveEntryInContainer(book)) {
+      this.incrementBookCount(book);
+    } else {
+      this.addBookToContainer(book);
+    }
+    return true;
+  }
+
+  borrowBook(book, usr) {
+    if(!this.isValidBook(book) && !this.isValidUser(usr)){
+      this. throwBothArgNotAvailableException(
+        "Both Parameters Is Either Null Or Invalid"
+      );
+    }
+    if (!this.isValidUser(usr)) {
+      this.throwInvalidUserException("User Parameter Is Either Null Or Invalid");
+    }
+    if (!this.isValidBook(book)) {
+      this.throwInvalidBookException("Book Parameter Is Either Null Or Invalid");
+    }
+  
+    if (!this.doesBookHaveEntryInContainer(book)) {
+      this.throwBookNotAvailableException(book);
+    }
+  
+    const currBookCount = this.bookContainer.get(book);
+    if (currBookCount > 0) {
+      this.bookContainer.set(book, currBookCount - 1);
+      return true;
+    } else {
+      this.throwBookNotAvailableException(book);
     }
     return false;
   }
+  
 
-  doesBookHaveEntryInContainer(book) {
-    return this.bookContainer.has(book);
+  returnBook(book, usr) {
+    throw new Error("Method 'returnBook' is not implemented");
+  }
+
+  getAvlBooks() {
+    return Array.from(this.bookContainer.keys());
+  }
+
+  // Helper methods
+  isValidBook(book) {
+    return book !== null;
   }
 
   isValidUser(usr) {
     return usr !== null;
   }
 
-  isValidBook(book) {
-    return book !== null;
+  doesBookHaveEntryInContainer(book) {
+    return this.bookContainer.has(book);
+  }
+
+  isBookAvailableToBorrow(book) {
+    return (
+      this.doesBookHaveEntryInContainer(book) &&
+      this.bookContainer.get(book) > 0
+    );
+  }
+
+  incrementBookCount(book) {
+    const currentCount = this.bookContainer.get(book);
+    this.bookContainer.set(book, currentCount + 1);
+  }
+
+  decrementBookCount(book) {
+    const currentCount = this.bookContainer.get(book);
+    this.bookContainer.set(book, currentCount - 1);
+  }
+
+  addBookToContainer(book) {
+    this.bookContainer.set(book, 1);
+  }
+
+  isNewUser(usr) {
+    return !this.isRegisteredUser(usr);
+  }
+
+  isRegisteredUser(usr) {
+    return this.userCollection.has(usr);
+  }
+
+  registerNewUser(usr) {
+    this.userCollection.add(usr);
   }
 
   throwInvalidUserException(errMsg) {
@@ -81,49 +164,9 @@ class Library extends LibraryFunctionalitiesForBook {
     throw new BookNotAvailableException(book);
   }
 
-  throwBothArgNotAvailableException(book) {
-    throw new IllegalArgumentException(book);
+  throwBothArgNotAvailableException() {
+    throw new IllegalArgumentException("Both parameters are invalid");
   }
-
-  borrowBook(book, usr) {
-    if (this.isValidUser(usr) && this.isValidBook(book)) {
-      if (this.doesBookHaveEntryInContainer(book)) {
-        const currBookCount = this.bookContainer.get(book);
-        if (currBookCount > 0) {
-          this.bookContainer.set(book, currBookCount - 1);
-          return true;
-        } else {
-          this.throwBookNotAvailableException(book);
-        }
-      } else {
-        this.throwBookNotAvailableException(book);
-      }
-    } else {
-      if (!this.isValidBook(book) && !this.isValidUser(usr)) {
-        this.throwBothArgNotAvailableException(
-          "Book Parameter Is Either Null Or Invalid"
-        );
-      } else if (!this.isValidBook(book)) {
-        this.throwInvalidBookException(
-          "Book Parameter Is Either Null Or Invalid"
-        );
-      } else {
-        this.throwInvalidUserException(
-          "User Parameter Is Either Null Or Invalid"
-        );
-      }
-    }
-    return false;
-  }
-
-  returnBook(book, usr) {
-    throw new Error("Method 'returnBook' is not implemented");
-  }
-
-  getAvlBooks() {
-    return Array.from(this.bookContainer.keys());
-  }
-
   getRegisteredUsers() {
     return this.userCollection;
   }

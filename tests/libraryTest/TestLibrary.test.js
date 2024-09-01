@@ -79,14 +79,28 @@ describe("Library Tests", () => {
     expect(avlBookList[0]).toEqual(testBook);
   });
 
-  test("should return false if addBook is called with null book", () => {
-    const libName = "New Library";
-    const lib = new Library(libName);
-    const usr = new User("Darshil");
-    expect(lib.addBook(null, usr)).toBe(false);
+  test("should throw InvalidBookException if addBook is called with null book", () => {
+    const lib = new Library("Rollwala Library");
+    const usr = new User("Biswojit");
+
+    // Expect addBook to throw InvalidBookException when the book is null
+    expect(() => lib.addBook(null, usr)).toThrow(InvalidBookException);
   });
 
-  test("should return false if addBook is called with null user", () => {
+  test("should throw InvalidUserException if addBook is called with null user", () => {
+    const lib = new Library("Rollwala Library");
+    const testBook = new Book(
+      "1234567890",
+      "Deep Learning",
+      "Ian Goodfellow",
+      2000
+    );
+
+    // Expect addBook to throw InvalidUserException when the user is null
+    expect(() => lib.addBook(testBook, null)).toThrow(InvalidUserException);
+  });
+
+  test("should throw InvalidUserException when borrowBook is called with null user", () => {
     const libName = "New Library";
     const lib = new Library(libName);
     const ISBN = "1234567890";
@@ -97,7 +111,7 @@ describe("Library Tests", () => {
       "Ian Goodfellow",
       publicationYear
     );
-    expect(lib.addBook(testBook, null)).toBe(false);
+    expect(() => lib.borrowBook(testBook, null)).toThrow(InvalidUserException);
   });
 
   test("should throw InvalidUserException when borrowBook is called with null user", () => {
@@ -227,7 +241,7 @@ describe("Library Tests", () => {
     );
     const usr = new User("Darshil");
     lib.addBook(testBook, usr);
-    const bookContainer = lib.bookContainer; 
+    const bookContainer = lib.bookContainer;
     expect(bookContainer.get(testBook)).toBe(1);
     lib.borrowBook(testBook, usr);
     expect(bookContainer.get(testBook)).toBe(0);
