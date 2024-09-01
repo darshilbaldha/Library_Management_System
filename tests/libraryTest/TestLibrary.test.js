@@ -191,4 +191,20 @@ describe("Library Tests", () => {
     expect(() => lib.borrowBook(testBook, usr)).not.toThrow();
     expect(bookContainer.get(testBook)).toBe(0);
   });
+
+  test('borrowBook method does not decrement book count when count is already zero', () => {
+    const libName = 'New Library';
+    const lib = new Library(libName);
+    const ISBN = '1234567890';
+    const publicationYear = 2000; // Assuming Year is a simple number in JavaScript
+    const testBook = new Book(ISBN, 'Web Development', 'Ian Goodfellow', publicationYear);
+    const usr = new User('Darshil');
+    lib.addBook(testBook, usr);
+    const bookContainer = lib.bookContainer;
+    expect(bookContainer.has(testBook)).toBe(true);
+    expect(bookContainer.get(testBook)).toBe(1);
+    expect(() => lib.borrowBook(testBook, usr)).not.toThrow();
+    expect(() => lib.borrowBook(testBook, usr)).not.toThrow();
+    expect(bookContainer.get(testBook)).toBe(0);
+});
 });
