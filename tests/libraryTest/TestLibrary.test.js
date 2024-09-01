@@ -162,11 +162,23 @@ describe("Library Tests", () => {
     expect(userList.has(usr)).toBe(true);
   });
 
-  test("Borrow book method throws Error when called with null argument", () => {
+  test("Borrow book method throws IllegalArgumentException when called with null argument", () => {
     const libName = "New Library";
     const lib = new Library(libName);
 
     const usr = new User("Darshil");
-    lib.borrowBook(usr);
+
+    // Expecting borrowBook to throw an IllegalArgumentException when called with null
+    expect(() => lib.borrowBook(null)).toThrow(IllegalArgumentException);
+  });
+
+  test("Borrow book method throws BookNotAvailableException when called with empty bookContainer", () => {
+    const libName = "New Library";
+    const lib = new Library(libName);
+
+    const usr = new User("Darshil");
+
+    // Expecting borrowBook to throw a BookNotAvailableException when the bookContainer is empty
+    expect(() => lib.borrowBook(usr)).toThrow(BookNotAvailableException);
   });
 });
