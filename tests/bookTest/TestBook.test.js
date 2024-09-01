@@ -8,14 +8,14 @@ describe("Book Tests", () => {
   });
 
   test("Book constructor should return a non-null object with valid arguments", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const publicationYear = 2000;
     const book = new Book(ISBN, "Web Development", "Darshil", publicationYear);
     expect(book).not.toBeNull();
   });
 
   test("Book constructor should throw an error if more than required arguments are passed", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const publicationYear = 2000;
     expect(
       () =>
@@ -32,7 +32,7 @@ describe("Book Tests", () => {
   });
 
   test("Book constructor with null title should throw IllegalArgumentException", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const publicationYear = 2000;
     expect(
       () => new Book(ISBN, null, "Ian Goodfellow", publicationYear)
@@ -40,7 +40,7 @@ describe("Book Tests", () => {
   });
 
   test("Book constructor should throw an error if the book title is less than 4 characters", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const publicationYear = 2000;
 
     expect(
@@ -49,7 +49,7 @@ describe("Book Tests", () => {
   });
 
   test("Book constructor with null author name should throw IllegalArgumentException", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const publicationYear = 2000;
     expect(
       () => new Book(ISBN, "Deep Learning", null, publicationYear)
@@ -57,7 +57,7 @@ describe("Book Tests", () => {
   });
 
   test("Book constructor should throw an error if the author name is less than 4 characters", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const publicationYear = 2000;
     expect(
       () => new Book(ISBN, "Web Development", "Ian", publicationYear)
@@ -65,14 +65,14 @@ describe("Book Tests", () => {
   });
 
   test("Book constructor with null publication year should throw IllegalArgumentException", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     expect(
       () => new Book(ISBN, "Deep Learning", "Ian Goodfellow", null)
     ).toThrow("Publication Year must not be null");
   });
 
   test("Book constructor should throw an error if publication year is less than or equal to 0000", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const invalidPublicationYear = 0; // Assuming 0000 is represented as 0
 
     expect(
@@ -82,17 +82,34 @@ describe("Book Tests", () => {
   });
 
   test("Book constructor should throw an error if publication year is greater than the current year", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const futureYear = new Date().getFullYear() + 1;
 
     expect(
       () => new Book(ISBN, "Valid Title", "Valid Author", futureYear)
     ).toThrow(
-      "Publication Year must not be greater than current year (" + new Date().getFullYear() + ")");
+      "Publication Year must not be greater than current year (" +
+        new Date().getFullYear() +
+        ")"
+    );
   });
 
+  test("Book constructor with null ISBN should throw an error", () => {
+    const publicationYear = 2000;
+    expect(() => new Book(null, "Deep Learning", "Ian Goodfellow", publicationYear))
+      .toThrow("ISBN must be at least 10 characters long { null }");
+  });
+
+  test("Book constructor with ISBN length less than 10 should throw an error", () => {
+    const ISBN = "1234567";
+    const publicationYear = 2000;
+    expect(() => new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear))
+      .toThrow("ISBN must be at least 10 characters long");
+  });
+
+
   test("Get methods should work fine for a perfectly created Book object", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const publicationYear = 2000;
     const bookTitle = "web Development";
     const authorName = "Ian Goodfellow";
@@ -105,7 +122,7 @@ describe("Book Tests", () => {
   });
 
   test("Testing toString method must not return null for a perfectly created object", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const publicationYear = 2000;
     const bookTitle = "Deep Learning";
     const authorName = "Darshil"; // Corrected the name typo
@@ -121,7 +138,7 @@ describe("Book Tests", () => {
   });
 
   test("Testing equality and hash code contract for Book objects", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const publicationYear = 2000;
     const bookTitle = "Deep Learning";
     const authorName = "Darshil";
@@ -136,12 +153,11 @@ describe("Book Tests", () => {
     expect(testBook1.equals(testBook2)).toBe(true); // Equality check
 
     expect(testBook1 === testBook2).toBe(false); // reference is not same
-    expect(testBook1.equals(testBook2)).toBe(true);
     expect(testBook1).toEqual(testBook2); // Checks value equality
   });
 
   test("hashCode functionality should stay consistent", () => {
-    const ISBN = [1234567890];
+    const ISBN = "1234567890";
     const publicationYear = 2000;
     const bookTitle = "Deep Learning";
     const authorName = "Ian Goodfellow";
@@ -152,8 +168,8 @@ describe("Book Tests", () => {
   });
 
   test("Additional Testing of equals Method", () => {
-    const ISBN = [1234567890];
-    const ISBN2 = [123456789];
+    const ISBN = "1234567890";
+    const ISBN2 = "12345678901";
     const publicationYear = 2000;
     const publicationYear2 = 2002;
     const bookTitle = "Deep Learning";

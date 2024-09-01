@@ -6,7 +6,8 @@ describe("LibraryFunctionalitiesForBook Tests", () => {
   test("initial Test For Methods defined Library Functionalities Interface", () => {
     const testFunc = new MockLibraryFunctionalitiesForBook();
     const testUser = new User("Darshil");
-    const ISBN = [1234567890];
+    
+    const ISBN = "1234567890"; 
     const publicationYear = 2000;
     const testBook = new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear);
 
