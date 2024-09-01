@@ -88,10 +88,12 @@ class Library extends LibraryFunctionalitiesForBook {
   borrowBook(book, usr) {
     if (this.isValidUser(usr) && this.isValidBook(book)) {
       if (this.doesBookHaveEntryInContainer(book)) {
+        const currBookCount = this.bookContainer.get(book);
+        this.bookContainer.set(book, currBookCount - 1);
         return true;
-      } else {
+    } else {
         this.throwBookNotAvailableException(book);
-      }
+    }
     } else {
       if (!this.isValidBook(book) && !this.isValidUser(usr)) {
         this.throwBothArgNotAvailableException(
@@ -111,22 +113,6 @@ class Library extends LibraryFunctionalitiesForBook {
     }
     return false;
   }
-
-  // borrowBook(book, user) {
-  //   if(user === null && book === null){
-  //     throw new Error("Book and User must not be null");
-  //   }
-  //   else  if (user === null) {
-  //     throw new Error("User must not be null");
-  //   } else if (book === null) {
-  //     throw new Error("Book must not be null");
-  //   } else {
-  //     if (!this.bookContainer.has(book)) {
-  //       throw new BookNotAvailableException(book);
-  //     }
-  //     return true;
-  //   }
-  // }
 
   returnBook(book, usr) {
     throw new Error("Method 'returnBook' is not implemented");
