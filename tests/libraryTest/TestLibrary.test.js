@@ -4,15 +4,11 @@ import Book from "../../src/assessment/incubyte/book/Book";
 
 describe("Library Tests", () => {
   test("Library constructor should throw an error if no arguments are passed", () => {
-    expect(() => new Library()).toThrow(
-      "Library Can't be Created Without Name"
-    );
+    expect(() => new Library()).toThrow("Library Can't be Created Without Name");
   });
 
   test("Library constructor should throw an error if name is less than 4 characters", () => {
-    expect(() => new Library("abc")).toThrow(
-      "Library name must be at least 4 characters long"
-    );
+    expect(() => new Library("abc")).toThrow("Library name must be at least 4 characters long");
   });
 
   test("Library constructor should return a non-null object with a valid name", () => {
@@ -21,9 +17,8 @@ describe("Library Tests", () => {
   });
 
   test("Library constructor should throw an error if multiple arguments are passed", () => {
-    expect(
-      () => new Library("New Library", "Gujarat University Library")
-    ).toThrow("Constructor should be called with only one argument");
+    expect(() => new Library("New Library", "Gujarat University Library"))
+      .toThrow("Constructor should be called with only one argument");
   });
 
   test("Testing Initialization Of Object with getName Function", () => {
@@ -34,17 +29,12 @@ describe("Library Tests", () => {
   });
 
   test("Test That addBook Method returns true when a new book is added to library", () => {
-    const libName = "New-Library";
+    const libName = "New Library";
     const lib = new Library(libName);
 
     const ISBN = "1234567890";
-    const publicationYear = 2000; // JavaScript's Year.of equivalent
-    const testBook = new Book(
-      ISBN,
-      "Web-Development",
-      "lan-goodfellow",
-      publicationYear
-    );
+    const publicationYear = 2000; // Year handling
+    const testBook = new Book(ISBN, "Web Development", "Ian Goodfellow", publicationYear);
 
     const usr = new User("Darshil");
     expect(lib.addBook(testBook, usr)).toBe(true);
@@ -54,10 +44,8 @@ describe("Library Tests", () => {
     const libName = "New Library";
     const lib = new Library(libName);
 
-    // Call getAvlBooks method
     const avlBooks = lib.getAvlBooks();
 
-    // Assert that the result is an empty array
     expect(avlBooks).toEqual([]);
   });
 
@@ -66,13 +54,8 @@ describe("Library Tests", () => {
     const lib = new Library(libName);
 
     const ISBN = "1234567890";
-    const publicationYear = 2000; // Assuming this is how you handle years
-    const testBook = new Book(
-      ISBN,
-      "Web Development",
-      "Darshil",
-      publicationYear
-    );
+    const publicationYear = 2000; // Year handling
+    const testBook = new Book(ISBN, "Web Development", "Ian Goodfellow", publicationYear);
 
     const usr = new User("Darshil");
 
@@ -81,5 +64,41 @@ describe("Library Tests", () => {
 
     const avlBookList = lib.getAvlBooks();
     expect(avlBookList[0]).toEqual(testBook);
+  });
+
+  test("addBook method should not add duplicate books again", () => {
+    const libName = "New Library";
+    const lib = new Library(libName);
+
+    const ISBN = "1234567890";
+    const publicationYear = 2000;
+    const testBook = new Book(ISBN, "Web Development", "Ian Goodfellow", publicationYear);
+
+    const usr = new User("Darshil");
+
+    expect(lib.addBook(testBook, usr)).toBe(true);
+    expect(lib.addBook(testBook, usr)).toBe(true);
+
+    expect(lib.getAvlBooks().length).toBe(1);
+
+    const avlBookList = lib.getAvlBooks();
+    expect(avlBookList[0]).toEqual(testBook);
+  });
+
+  test("addBook method should register a user if not registered previously", () => {
+    const libName = "New Library";
+    const lib = new Library(libName);
+
+    const ISBN = "1234567890";
+    const publicationYear = 2000;
+    const testBook = new Book(ISBN, "Web Development", "Ian Goodfellow", publicationYear);
+
+    const usr = new User("Darshil");
+
+    expect(lib.addBook(testBook, usr)).toBe(true);
+
+    // Assuming Library class has a method getRegisteredUsers() to access userList
+    const userList = lib.getRegisteredUsers();
+    expect(userList.has(usr)).toBe(true);
   });
 });

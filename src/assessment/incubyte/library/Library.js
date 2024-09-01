@@ -31,14 +31,23 @@ class Library extends LibraryFunctionalitiesForBook {
   }
 
   addBook(book, usr) {
-    // Example implementation
-    // Here you might want to add additional logic for adding books
-    if (book instanceof Book && usr instanceof User) {
-      const currentCount = this.bookContainer.get(book) || 0;
-      this.bookContainer.set(book, currentCount + 1);
-      return true; // Assume the book was added successfully
+    try {
+      if (book === null || usr === null) {
+        return false; // Handle null arguments if necessary
+      }
+
+      if (this.bookContainer.has(book)) {
+        let currBookCount = this.bookContainer.get(book);
+        this.bookContainer.set(book, currBookCount + 1);
+      } else {
+        this.bookContainer.set(book, 1);
+      }
+
+      return true;
+    } catch (error) {
+      // Handle exception
+      return false;
     }
-    return false;
   }
 
   borrowBook(usr) {
