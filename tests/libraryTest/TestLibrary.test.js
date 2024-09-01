@@ -38,7 +38,7 @@ describe("Library Tests", () => {
     const lib = new Library(libName);
 
     const ISBN = "1234567890";
-    const publicationYear = 2000 // JavaScript's Year.of equivalent
+    const publicationYear = 2000; // JavaScript's Year.of equivalent
     const testBook = new Book(
       ISBN,
       "Web-Development",
@@ -59,5 +59,27 @@ describe("Library Tests", () => {
 
     // Assert that the result is an empty array
     expect(avlBooks).toEqual([]);
+  });
+
+  test("addBook method should add the book and only that book to the library in order", () => {
+    const libName = "New Library";
+    const lib = new Library(libName);
+
+    const ISBN = "1234567890";
+    const publicationYear = 2000; // Assuming this is how you handle years
+    const testBook = new Book(
+      ISBN,
+      "Web Development",
+      "Darshil",
+      publicationYear
+    );
+
+    const usr = new User("Darshil");
+
+    expect(lib.addBook(testBook, usr)).toBe(true);
+    expect(lib.getAvlBooks().length).toBe(1);
+
+    const avlBookList = lib.getAvlBooks();
+    expect(avlBookList[0]).toEqual(testBook);
   });
 });

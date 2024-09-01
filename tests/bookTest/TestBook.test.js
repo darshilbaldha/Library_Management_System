@@ -35,7 +35,7 @@ describe("Book Tests", () => {
     const ISBN = "1234567890";
     const publicationYear = 2000;
     expect(
-      () => new Book(ISBN, null, "Ian Goodfellow", publicationYear)
+      () => new Book(ISBN, null, "Darshil", publicationYear)
     ).toThrow("Book Title must contain at least 4 characters { null }");
   });
 
@@ -44,7 +44,7 @@ describe("Book Tests", () => {
     const publicationYear = 2000;
 
     expect(
-      () => new Book(ISBN, "Dee", "Ian Goodfellow", publicationYear)
+      () => new Book(ISBN, "Dee", "Darshil", publicationYear)
     ).toThrow("Book Title must contain at least 4 characters { Dee }");
   });
 
@@ -52,7 +52,7 @@ describe("Book Tests", () => {
     const ISBN = "1234567890";
     const publicationYear = 2000;
     expect(
-      () => new Book(ISBN, "Deep Learning", null, publicationYear)
+      () => new Book(ISBN, "Web Development", null, publicationYear)
     ).toThrow("Author Name must contain at least 4 characters { null }");
   });
 
@@ -67,7 +67,7 @@ describe("Book Tests", () => {
   test("Book constructor with null publication year should throw IllegalArgumentException", () => {
     const ISBN = "1234567890";
     expect(
-      () => new Book(ISBN, "Deep Learning", "Ian Goodfellow", null)
+      () => new Book(ISBN, "Web Development", "Darshil", null)
     ).toThrow("Publication Year must not be null");
   });
 
@@ -96,21 +96,21 @@ describe("Book Tests", () => {
 
   test("Book constructor with null ISBN should throw an error", () => {
     const publicationYear = 2000;
-    expect(() => new Book(null, "Deep Learning", "Ian Goodfellow", publicationYear))
+    expect(() => new Book(null, "Web Development", "Darshil", publicationYear))
       .toThrow("ISBN must not be null");
   });
 
   test("Book constructor with ISBN length less than 10 should throw an error", () => {
     const ISBN = "1234567";
     const publicationYear = 2000;
-    expect(() => new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear))
+    expect(() => new Book(ISBN, "Web Development", "Darshil", publicationYear))
       .toThrow(`ISBN must be at least 10 characters long { ${ISBN} }`);
   });
 
   test("Book constructor with ISBN length less than 10 should throw an error", () => {
     const ISBN = "12345678910112";
     const publicationYear = 2000;
-    expect(() => new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear))
+    expect(() => new Book(ISBN, "Web Development", "Darshil", publicationYear))
       .toThrow(`ISBN length can be a maximum of 13 characters long { ${ISBN} }`);
   });
 
@@ -118,7 +118,7 @@ describe("Book Tests", () => {
     const ISBN = "1234567890";
     const publicationYear = 2000;
     const bookTitle = "web Development";
-    const authorName = "Ian Goodfellow";
+    const authorName = "Darshil";
     const testBook = new Book(ISBN, bookTitle, authorName, publicationYear);
 
     expect(testBook.getISBN()).toEqual(ISBN);
@@ -130,7 +130,7 @@ describe("Book Tests", () => {
   test("Testing toString method must not return null for a perfectly created object", () => {
     const ISBN = "1234567890";
     const publicationYear = 2000;
-    const bookTitle = "Deep Learning";
+    const bookTitle = "Web Development";
     const authorName = "Darshil"; // Corrected the name typo
 
     const testBook = new Book(ISBN, bookTitle, authorName, publicationYear);
@@ -146,7 +146,7 @@ describe("Book Tests", () => {
   test("Testing equality and hash code contract for Book objects", () => {
     const ISBN = "1234567890";
     const publicationYear = 2000;
-    const bookTitle = "Deep Learning";
+    const bookTitle = "Web Development";
     const authorName = "Darshil";
 
     const testBook1 = new Book(ISBN, bookTitle, authorName, publicationYear);
@@ -165,8 +165,8 @@ describe("Book Tests", () => {
   test("hashCode functionality should stay consistent", () => {
     const ISBN = "1234567890";
     const publicationYear = 2000;
-    const bookTitle = "Deep Learning";
-    const authorName = "Ian Goodfellow";
+    const bookTitle = "Web Development";
+    const authorName = "Darshil";
     const testBook1 = new Book(ISBN, bookTitle, authorName, publicationYear);
     const testBook2 = new Book(ISBN, bookTitle, authorName, publicationYear);
 
@@ -178,8 +178,8 @@ describe("Book Tests", () => {
     const ISBN2 = "12345678901";
     const publicationYear = 2000;
     const publicationYear2 = 2002;
-    const bookTitle = "Deep Learning";
-    const authorName = "Ian Goodfellow";
+    const bookTitle = "Web Development";
+    const authorName = "Darshil";
     const testBook1 = new Book(ISBN, bookTitle, authorName, publicationYear);
     const testBook2 = new Book(ISBN, bookTitle, authorName, publicationYear);
     const testBook3 = new Book(

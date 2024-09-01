@@ -9,7 +9,7 @@ describe("LibraryFunctionalitiesForBook Tests", () => {
     
     const ISBN = "1234567890"; 
     const publicationYear = 2000;
-    const testBook = new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear);
+    const testBook = new Book(ISBN, "Web Development", "Darshil", publicationYear);
 
     expect(testFunc.addBook(testBook, testUser)).toBe(true);
     expect(testFunc.borrowBook(testUser)).toBe(true);

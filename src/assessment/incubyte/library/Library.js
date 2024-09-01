@@ -1,4 +1,6 @@
 import LibraryFunctionalitiesForBook from "./LibraryFunctionalitiesForBook"; // Adjust the path as necessary
+import Book from "../Book/Book";
+import User from "../user/User";
 
 class Library extends LibraryFunctionalitiesForBook {
   constructor(...args) {
@@ -11,7 +13,7 @@ class Library extends LibraryFunctionalitiesForBook {
       const libName = args[0];
       if (this.isNameValid(libName)) {
         this.libName = libName;
-        this.bookList = []; // Initialize the book list
+        this.bookContainer = new Map(); // Initialize the book container
       } else {
         throw new Error("Library name must be at least 4 characters long");
       }
@@ -30,8 +32,13 @@ class Library extends LibraryFunctionalitiesForBook {
 
   addBook(book, usr) {
     // Example implementation
-    // Here you might want to add additional logic
-    return true; // Assume the book was added successfully
+    // Here you might want to add additional logic for adding books
+    if (book instanceof Book && usr instanceof User) {
+      const currentCount = this.bookContainer.get(book) || 0;
+      this.bookContainer.set(book, currentCount + 1);
+      return true; // Assume the book was added successfully
+    }
+    return false;
   }
 
   borrowBook(usr) {
@@ -43,7 +50,7 @@ class Library extends LibraryFunctionalitiesForBook {
   }
 
   getAvlBooks() {
-    return Object.freeze([...this.bookList]); // Return an immutable copy of the book list
+    return Array.from(this.bookContainer.keys());
   }
 }
 
