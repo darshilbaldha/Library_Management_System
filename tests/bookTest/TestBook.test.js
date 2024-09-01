@@ -1,4 +1,5 @@
 import Book from "../../src/assessment/incubyte/book/Book";
+import DemoTestBookObjectStore from "./DemoTestBookObjectStore";
 
 describe("Book Tests", () => {
   test("Book constructor should throw an error if no arguments are passed", () => {
@@ -7,11 +8,9 @@ describe("Book Tests", () => {
     );
   });
 
-  test("Book constructor should return a non-null object with valid arguments", () => {
-    const ISBN = "1234567890";
-    const publicationYear = 2000;
-    const book = new Book(ISBN, "Web Development", "Darshil", publicationYear);
-    expect(book).not.toBeNull();
+  test('Book Constructor call with appropriate parameters should return non-null object', () => {
+    const testBook = DemoTestBookObjectStore.getBookObject(0);    
+    expect(testBook).not.toBeNull();
   });
 
   test("Book constructor should throw an error if more than required arguments are passed", () => {
@@ -127,21 +126,23 @@ describe("Book Tests", () => {
     expect(testBook.getPublicationYear()).toBe(publicationYear);
   });
 
-  test("Testing toString method must not return null for a perfectly created object", () => {
-    const ISBN = "1234567890";
+  test('Testing toString method must not return null for a perfectly created object', () => {
+    const ISBN = '1234567890';
     const publicationYear = 2000;
-    const bookTitle = "Web Development";
-    const authorName = "Darshil"; // Corrected the name typo
+    const bookTitle = 'Web Development';
+    const authorName = 'Darshil'; // Corrected the name typo
 
     const testBook = new Book(ISBN, bookTitle, authorName, publicationYear);
 
-    const expectedString = `Book [ISBN=${ISBN.toString()}, bookTitle=${bookTitle}, authorName=${authorName}, publicationYear=${publicationYear}]`;
+    const expectedString = `Book [ISBN=${ISBN}, bookTitle=${bookTitle}, authorName=${authorName}, publicationYear=${publicationYear}]`;
+
     // Check that toString does not return null
     expect(testBook.toString()).not.toBeNull();
 
     // Check that toString returns the expected string
     expect(testBook.toString()).toBe(expectedString);
   });
+
 
   test("Testing equality and hash code contract for Book objects", () => {
     const ISBN = "1234567890";
