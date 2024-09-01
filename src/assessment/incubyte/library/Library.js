@@ -51,7 +51,13 @@ class Library extends LibraryFunctionalitiesForBook {
     return this.MAX_BOOK_ALLOWED_TO_BORROW;
   }
 
-  addBook(book, usr) {
+  addBook(book, user) {
+    this.validateUserAndBook(user, book);
+    this.processBookAdding(book, user);
+    return true;
+  }
+
+  validateUserAndBook(usr, book) {
     if (!this.isValidBook(book) && !this.isValidUser(usr)) {
       throw new IllegalArgumentException(
         "Both Parameters Are Either Null Or Invalid"
@@ -67,59 +73,63 @@ class Library extends LibraryFunctionalitiesForBook {
         "Book Parameter Is Either Null Or Invalid"
       );
     }
-    if (this.isNewUser(usr)) {
-      this.registerNewUser(usr);
+  }
+
+  borrowBook(param, usr) {
+    this.validateUserAndBook(usr, param);
+    const book = this.resolveBook(param);
+
+    this.ensureBookCanBeBorrowed(usr, book);
+    this.processBookBorrowing(usr, book);
+
+    return true;
+  }
+
+  processBookBorrowing(user, book) {
+    if (this.isNewUser(user)) {
+      this.registerNewUser(user);
+    }
+    this.decrementBookCount(book);
+    this.addBorrowEntry(user, book);
+  }
+  resolveBook(param) {
+    if (param === null) {
+      throw new InvalidBookException(
+        "Book Parameter Is Either Null Or Invalid"
+      );
+    }
+
+    if (param instanceof Book) {
+      return param;
+    } else if (typeof param === "string") {
+      // Assuming ISBN is a string
+      return this.getBookByISBN(param);
+    } else {
+      throw new InvalidBookException("Book Parameter Is Either Null Or Invalid");
+    }
+  }
+
+  ensureBookCanBeBorrowed(user, book) {
+    if (!this.isBookAvailableToBorrow(book)) {
+      throw new BookNotAvailableException(book);
+    }
+
+    if (!this.isUserEligibleToBorrow(user, book)) {
+      throw new BorrowLimitExceededException(
+        "You have Exceeded The Number Of Books Allowed To Borrow Please Return Any Of Your Previous Books To Continue"
+      );
+    }
+  }
+
+  processBookAdding(book, user) {
+    if (this.isNewUser(user)) {
+      this.registerNewUser(user);
     }
     if (this.doesBookHaveEntryInContainer(book)) {
       this.incrementBookCount(book);
     } else {
       this.addBookToContainer(book);
     }
-    return true;
-  }
-
-  borrowBook(param, usr) {
-    if (!this.isValidBook(param) && !this.isValidUser(usr)) {
-      throw new IllegalArgumentException(
-        "Both Parameters Are Either Null Or Invalid"
-      );
-    }
-    const paramType = this.isABookOrAnISBN(param);
-    let book = null;
-
-    if (paramType === null) {
-      throw new InvalidBookException(
-        "Book Parameter Is Either Null Or Invalid"
-      );
-    }
-    if (!this.isValidUser(usr)) {
-      throw new InvalidUserException(
-        "User Parameter Is Either Null Or Invalid"
-      );
-    }
-    if (paramType === "Book") {
-      book = param;
-    } else if (paramType === "ISBN") {
-      const ISBN = param;
-      book = this.getBookByISBN(ISBN);
-    }
-    if (!this.isValidBook(book)) {
-      throw new InvalidBookException("Book/ISBN Is Either Null Or Invalid");
-    }
-    if (!this.isBookAvailableToBorrow(book)) {
-      throw new BookNotAvailableException(book);
-    }
-    if (!this.isEligibleToBorrow(usr, book)) {
-      throw new BorrowLimitExceededException(
-        "You have exceeded the number of books allowed to borrow. Please return any of your previous books to continue."
-      );
-    }
-    if (this.isNewUser(usr)) {
-      this.registerNewUser(usr);
-    }
-    this.decrementBookCount(book);
-    this.addBorrowEntry(usr, book);
-    return true;
   }
 
   returnBook(book, usr) {
@@ -234,11 +244,14 @@ class Library extends LibraryFunctionalitiesForBook {
     borrowedBookList.push(book);
   }
 
-  isEligibleToBorrow(usr, book) {
+  isUserEligibleToBorrow(usr, book) {
     const borrowedBooks = this.borrowedBooksRecord.get(usr) || [];
-    return borrowedBooks.length < this.MAX_BOOK_ALLOWED_TO_BORROW && !borrowedBooks.includes(book);
+    return (
+      borrowedBooks.length < this.MAX_BOOK_ALLOWED_TO_BORROW &&
+      !borrowedBooks.includes(book)
+    );
   }
-  
+
   isUserEligibleToReturnThisBook(book, usr) {
     if (!this.doesBookHaveEntryInContainer(book)) {
       return false;
