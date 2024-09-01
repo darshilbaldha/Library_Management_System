@@ -32,26 +32,23 @@ class Library extends LibraryFunctionalitiesForBook {
   }
 
   addBook(book, usr) {
-    try {
-      if (book === null || usr === null) {
-        return false; // Handle null arguments if necessary
+    if (book != null && usr != null) {
+      try {
+        if (this.bookContainer.has(book)) {
+          const currBookCount = this.bookContainer.get(book);
+          this.bookContainer.set(book, currBookCount + 1);
+        } else {
+          this.bookContainer.set(book, 1);
+          this.userCollection.add(usr);
+        }
+        return true;
+      } catch (e) {
+        // Handle the exception if needed
+        return false;
       }
-
-      if (this.bookContainer.has(book)) {
-        let currBookCount = this.bookContainer.get(book);
-        this.bookContainer.set(book, currBookCount + 1);
-      } else {
-        this.bookContainer.set(book, 1);
-        this.userCollection.add(usr);
-      }
-
-      return true;
-    } catch (error) {
-      // Handle exception
+    } else {
       return false;
     }
-
-   
   }
 
   borrowBook(usr) {

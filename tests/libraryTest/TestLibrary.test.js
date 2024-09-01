@@ -82,42 +82,35 @@ describe("Library Tests", () => {
   });
 
   test("addBook method returns false if null is passed as the book argument", () => {
-    const libName = "New Library";
+    const libName = "Rollwala Library";
     const lib = new Library(libName);
-
-    const usr = new User("Darshil");
+  
+    const usr = new User("Biswojit");
+  
+    // Test that adding a null book returns false
     expect(lib.addBook(null, usr)).toBe(false);
-
-    // Ensure no books are available
+  
+    // Test that the available books list is empty
     const avlBookList = lib.getAvlBooks();
-    expect(avlBookList.length).toBe(0);
-
-    // Trying to access the first book should not throw an error because the array is empty
-    expect(() => avlBookList[0]).toThrowError(TypeError);
+    expect(avlBookList).toEqual([]);
   });
 
   test("addBook method returns false if null is passed as the user argument", () => {
-    const libName = "New Library";
+    const libName = "Rollwala Library";
     const lib = new Library(libName);
-
+  
     const ISBN = "1234567890";
-    const publicationYear = 2000;
-    const testBook = new Book(
-      ISBN,
-      "Web Development",
-      "Ian Goodfellow",
-      publicationYear
-    );
-
+    const publicationYear = 2000; // Assuming how you handle years
+    const testBook = new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear);
+  
+    // Test that adding a book with a null user returns false
     expect(lib.addBook(testBook, null)).toBe(false);
-
-    // Ensure no books are available
+  
+    // Test that the available books list is empty
     const avlBookList = lib.getAvlBooks();
-    expect(avlBookList.length).toBe(0);
-
-    // Trying to access the first book should not throw an error because the array is empty
-    expect(() => avlBookList[0]).toThrowError(TypeError);
+    expect(avlBookList).toEqual([]);
   });
+  
 
   test("addBook method should not add duplicate books again", () => {
     const libName = "New Library";
