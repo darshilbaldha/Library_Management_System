@@ -97,7 +97,7 @@ class Library extends LibraryFunctionalitiesForBook {
     if (!this.isBookAvailableToBorrow(book)) {
       this.throwBookNotAvailableException(book);
     }
-    if (!this.isEligibleToBorrow(usr,book)) {
+    if (!this.isEligibleToBorrow(usr, book)) {
       this.throwBorrowLimitExceededException(
         "You have Exceeded The Number Of Books Allowed To Borrow. Please Return Any Of Your Previous Books To Continue"
       );
@@ -117,10 +117,14 @@ class Library extends LibraryFunctionalitiesForBook {
       );
     }
     if (!this.isValidUser(usr)) {
-      this.throwInvalidUserException("User Parameter Is Either Null Or Invalid");
+      this.throwInvalidUserException(
+        "User Parameter Is Either Null Or Invalid"
+      );
     }
     if (!this.isValidBook(book)) {
-      this.throwInvalidBookException("Book Parameter Is Either Null Or Invalid");
+      this.throwInvalidBookException(
+        "Book Parameter Is Either Null Or Invalid"
+      );
     }
     if (!this.isUserEligibleToReturnThisBook(book, usr)) {
       this.throwInvalidReturnAttemptException(book, usr);
@@ -187,23 +191,24 @@ class Library extends LibraryFunctionalitiesForBook {
     }
     borrowedBookList.push(book);
   }
-  
 
   isEligibleToBorrow(usr, book) {
     const borrowedBooks = this.borrowedBooksRecord.get(usr);
 
     if (!borrowedBooks) {
-        return true;
-    } 
-    if (borrowedBooks.length >= this.MAX_BOOK_ALLOWED_TO_BORROW) {
-        return false;
+      return true;
     }
-    if (borrowedBooks.includes(book)) {
-        return false;
-    }
-    return true;
-}
 
+    if (borrowedBooks.length >= this.MAX_BOOK_ALLOWED_TO_BORROW) {
+      return false;
+    }
+
+    if (borrowedBooks.includes(book)) {
+      return false;
+    }
+
+    return true;
+  }
 
   throwInvalidUserException(errMsg) {
     throw new InvalidUserException(errMsg);
@@ -212,8 +217,7 @@ class Library extends LibraryFunctionalitiesForBook {
   throwInvalidBookException(errMsg) {
     throw new InvalidBookException(errMsg);
   }
-throwBookNotAvailableException
-  (book) {
+  throwBookNotAvailableException(book) {
     throw new BookNotAvailableException(book);
   }
 
@@ -259,7 +263,6 @@ throwBookNotAvailableException
   getBookContainer() {
     return this.bookContainer;
   }
-  
 }
 
 export default Library;

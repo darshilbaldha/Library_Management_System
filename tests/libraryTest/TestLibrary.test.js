@@ -301,24 +301,31 @@ describe("Library Tests", () => {
     expect(borrowedBooksRecord.get(usr)).toContain(testBook);
   });
 
-  test('borrowBook method limits the max borrowing numbers to specified value', () => {
+  test('Test that borrowBook method limits the max borrowing numbers to specified value', () => {
     const libName = "New Library";
     const lib = new Library(libName);
-  
-    const ISBN = "1234567890";
+
+    const ISBN1 = "1234567890";
+    const ISBN2 = "1234567891";
+    const ISBN3 = "1234567892";
     const publicationYear = 2000;
-    const testBook = new Book(ISBN, "Web Development", "Ian Goodfellow", publicationYear);
+    const testBook1 = new Book(ISBN1, "Web Development 1", "Ian Goodfellow", publicationYear);
+    const testBook2 = new Book(ISBN2, "Web Development 2", "Ian Goodfellow", publicationYear);
+    const testBook3 = new Book(ISBN3, "Web Development 3", "Ian Goodfellow", publicationYear);
+
     const usr = new User("Darshil");
-  
-    const maxBooksAllowedToBorrow = lib.getMaxBooksAllowedToBorrow();
-    for (let i = 0; i < maxBooksAllowedToBorrow + 2; i++) {
-      lib.addBook(testBook, usr);
-    }
-    for (let i = 0; i < maxBooksAllowedToBorrow; i++) {
-      lib.borrowBook(testBook, usr);
-    }
-    expect(() => lib.borrowBook(testBook, usr)).toThrow(BorrowLimitExceededException);
-  });
+
+    // Assuming maxBooksAllowedToBorrow is 2
+    lib.addBook(testBook1, usr);
+    lib.addBook(testBook2, usr);
+    lib.addBook(testBook3, usr);
+
+    lib.borrowBook(testBook1, usr);
+    lib.borrowBook(testBook2, usr);
+
+    expect(() => lib.borrowBook(testBook3, usr)).toThrow(BorrowLimitExceededException);
+});
+
 
   test("returnBook method throws expected exceptions for invalid scenarios", () => {
     const libName = "New Library";
