@@ -11,6 +11,7 @@ class BookNotAvailableException extends Error {
       this.name = "BookNotAvailableException";
     }
   }
+
 }
 
 export default BookNotAvailableException;
