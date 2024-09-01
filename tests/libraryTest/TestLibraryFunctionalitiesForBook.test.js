@@ -12,7 +12,7 @@ describe("LibraryFunctionalitiesForBook Tests", () => {
     const testBook = new Book(ISBN, "Web Development", "Darshil", publicationYear);
 
     expect(testFunc.addBook(testBook, testUser)).toBe(true);
-    expect(testFunc.borrowBook(testUser)).toBe(true);
+    expect(testFunc.borrowBook(testBook,testUser)).toBe(true);
     expect(testFunc.returnBook(testBook, testUser)).toBe(true);
     expect(testFunc.getAvlBooks()).toEqual([]);
   });

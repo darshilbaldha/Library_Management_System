@@ -51,9 +51,11 @@ class Library extends LibraryFunctionalitiesForBook {
     }
   }
 
-  borrowBook(user) {
+  borrowBook(book, user) {
     if (user === null) {
       throw new Error("User must not be null");
+    } else if (book === null) {
+      throw new Error("Book must not be null");
     } else {
       return true;
     }
