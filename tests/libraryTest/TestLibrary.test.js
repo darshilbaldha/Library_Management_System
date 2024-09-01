@@ -38,7 +38,7 @@ describe("Library Tests", () => {
     const lib = new Library(libName);
 
     const ISBN = [1234567890];
-    const publicationYear = new Date(2000, 0, 1); // JavaScript's Year.of equivalent
+    const publicationYear = 2000 // JavaScript's Year.of equivalent
     const testBook = new Book(
       ISBN,
       "Web-Development",

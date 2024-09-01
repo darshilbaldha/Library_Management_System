@@ -1,51 +1,42 @@
 class Book {
   constructor(...args) {
-    if (args.length === 0) {
-      throw new Error("Book Can't be Created Without Initial Data");
-    }
-
-    if (
-      args[0] === undefined ||
-      args[1] === undefined ||
-      args[2] === undefined ||
-      args[3] === undefined
-    ) {
+    // Check for no arguments or undefined/null arguments
+    if (args.length === 0 || args.some((arg) => arg === undefined)) {
       throw new Error("Book Can't be Created Without Initial Data");
     }
 
     if (
       args.length === 4 &&
-      Array.isArray(args[0]) &&
-      typeof args[1] === "string" &&
-      typeof args[2] === "string" &&
-      typeof args[3] === "number"
+      Array.isArray(args[0]) 
     ) {
       this.ISBN = args[0];
       this.bookTitle = args[1];
       this.authorName = args[2];
       this.publicationYear = args[3];
 
-      //   Validation of Book title
-      if (args[1] !== null && args[1].length < 4) {
+      // Validation of Book title
+      if (this.bookTitle === null || this.bookTitle.length < 4) {
         throw new Error(
-          `Book Title must contain at least 4 characters { ${args[1]} }`
+          `Book Title must contain at least 4 characters { ${this.bookTitle} }`
         );
       }
-      //   Validation of name of author
-      if (args[2] !== null && args[2].length < 4) {
+
+      // Validation of Author Name
+      if (this.authorName === null || this.authorName.length < 4) {
         throw new Error(
-          `Author Name must contain at least 4 characters { ${args[2]} }`
+          `Author Name must contain at least 4 characters { ${this.authorName} }`
         );
       }
+
       // Validate publication year
-      if (args[3] === null) {
+      if (this.publicationYear === null) {
         throw new Error("Publication Year must not be null");
       }
       const currentYear = new Date().getFullYear();
-      if (args[3] <= 0) {
+      if (this.publicationYear <= 0) {
         throw new Error("Publication Year must not be 0000 or less");
       }
-      if (args[3] > currentYear) {
+      if (this.publicationYear > currentYear) {
         throw new Error(
           `Publication Year must not be greater than current year (${currentYear})`
         );

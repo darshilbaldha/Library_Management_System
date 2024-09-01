@@ -26,7 +26,17 @@ describe("Book Tests", () => {
           publicationYear,
           "Extra Arg"
         )
-    ).toThrow();
+    ).toThrow(
+      "Constructor should be called with only four (i.e., ISBN, bookTitle, authorName, publicationYear) arguments"
+    );
+  });
+
+  test("Book constructor with null title should throw IllegalArgumentException", () => {
+    const ISBN = [1234567890];
+    const publicationYear = 2000;
+    expect(
+      () => new Book(ISBN, null, "Ian Goodfellow", publicationYear)
+    ).toThrow("Book Title must contain at least 4 characters { null }");
   });
 
   test("Book constructor should throw an error if the book title is less than 4 characters", () => {
@@ -35,7 +45,15 @@ describe("Book Tests", () => {
 
     expect(
       () => new Book(ISBN, "Dee", "Ian Goodfellow", publicationYear)
-    ).toThrow("Book Title must contain at least 4 characters");
+    ).toThrow("Book Title must contain at least 4 characters { Dee }");
+  });
+
+  test("Book constructor with null author name should throw IllegalArgumentException", () => {
+    const ISBN = [1234567890];
+    const publicationYear = 2000;
+    expect(
+      () => new Book(ISBN, "Deep Learning", null, publicationYear)
+    ).toThrow("Author Name must contain at least 4 characters { null }");
   });
 
   test("Book constructor should throw an error if the author name is less than 4 characters", () => {
@@ -43,7 +61,14 @@ describe("Book Tests", () => {
     const publicationYear = 2000;
     expect(
       () => new Book(ISBN, "Web Development", "Ian", publicationYear)
-    ).toThrow("Author Name must contain at least 4 characters");
+    ).toThrow("Author Name must contain at least 4 characters { Ian }");
+  });
+
+  test("Book constructor with null publication year should throw IllegalArgumentException", () => {
+    const ISBN = [1234567890];
+    expect(
+      () => new Book(ISBN, "Deep Learning", "Ian Goodfellow", null)
+    ).toThrow("Publication Year must not be null");
   });
 
   test("Book constructor should throw an error if publication year is less than or equal to 0000", () => {
@@ -53,7 +78,7 @@ describe("Book Tests", () => {
     expect(
       () =>
         new Book(ISBN, "Valid Title", "Valid Author", invalidPublicationYear)
-    ).toThrow();
+    ).toThrow("Publication Year must not be 0000 or less");
   });
 
   test("Book constructor should throw an error if publication year is greater than the current year", () => {
@@ -62,7 +87,21 @@ describe("Book Tests", () => {
 
     expect(
       () => new Book(ISBN, "Valid Title", "Valid Author", futureYear)
-    ).toThrow();
+    ).toThrow(
+      "Publication Year must not be greater than current year (" + new Date().getFullYear() + ")");
+  });
+
+  test("Get methods should work fine for a perfectly created Book object", () => {
+    const ISBN = [1234567890];
+    const publicationYear = 2000;
+    const bookTitle = "web Development";
+    const authorName = "Ian Goodfellow";
+    const testBook = new Book(ISBN, bookTitle, authorName, publicationYear);
+
+    expect(testBook.getISBN()).toEqual(ISBN);
+    expect(testBook.getBookTitle()).toBe(bookTitle);
+    expect(testBook.getAuthorName()).toBe(authorName);
+    expect(testBook.getPublicationYear()).toBe(publicationYear);
   });
 
   test("Testing toString method must not return null for a perfectly created object", () => {
@@ -96,10 +135,42 @@ describe("Book Tests", () => {
     // Check that the objects are equal based on the equality method
     expect(testBook1.equals(testBook2)).toBe(true); // Equality check
 
-    // Test getters
-    expect(testBook1.getISBN()).toEqual(ISBN);
-    expect(testBook1.getBookTitle()).toEqual(bookTitle);
-    expect(testBook1.getAuthorName()).toEqual(authorName);
-    expect(testBook1.getPublicationYear()).toEqual(publicationYear);
+    expect(testBook1 === testBook2).toBe(false); // reference is not same
+    expect(testBook1.equals(testBook2)).toBe(true);
+    expect(testBook1).toEqual(testBook2); // Checks value equality
+  });
+
+  test("hashCode functionality should stay consistent", () => {
+    const ISBN = [1234567890];
+    const publicationYear = 2000;
+    const bookTitle = "Deep Learning";
+    const authorName = "Ian Goodfellow";
+    const testBook1 = new Book(ISBN, bookTitle, authorName, publicationYear);
+    const testBook2 = new Book(ISBN, bookTitle, authorName, publicationYear);
+
+    expect(testBook1.hashCode()).toBe(testBook2.hashCode());
+  });
+
+  test("Additional Testing of equals Method", () => {
+    const ISBN = [1234567890];
+    const ISBN2 = [123456789];
+    const publicationYear = 2000;
+    const publicationYear2 = 2002;
+    const bookTitle = "Deep Learning";
+    const authorName = "Ian Goodfellow";
+    const testBook1 = new Book(ISBN, bookTitle, authorName, publicationYear);
+    const testBook2 = new Book(ISBN, bookTitle, authorName, publicationYear);
+    const testBook3 = new Book(
+      ISBN2,
+      "other book",
+      "demo name",
+      publicationYear2
+    );
+
+    expect(testBook1.equals(null)).toBe(false);
+    expect(testBook1.equals(testBook3)).toBe(false);
+    expect(testBook1.equals({})).toBe(false);
+    expect(testBook1.equals(testBook2)).toBe(true);
+    expect(testBook1.equals(testBook1)).toBe(true);
   });
 });
