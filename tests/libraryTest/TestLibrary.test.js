@@ -5,6 +5,7 @@ import BookNotAvailableException from "../../src/assessment/incubyte/exception/B
 import InvalidBookException from "../../src/assessment/incubyte/exception/InvalidBookException";
 import InvalidUserException from "../../src/assessment/incubyte/exception/InvalidUserException";
 import LibraryInitialisationException from "../../src/assessment/incubyte/exception/LibraryInitialisationException";
+import IllegalArgumentException from "../../src/assessment/incubyte/exception/IllegalArgumentException";
 
 describe("Library Tests", () => {
   test("should throw LibraryInitialisationException with no arguments", () => {
@@ -169,5 +170,25 @@ describe("Library Tests", () => {
     const testBook = new Book(ISBN, 'Web Development', 'Ian Goodfellow', publicationYear);
     const usr = new User('Biswojit');
     expect(() => lib.borrowBook(testBook, usr)).toThrow(BookNotAvailableException);
+  });
+
+  test('borrowBook method should decrement book count by 1 when called with proper parameters', () => {
+    const libName = 'New Library';
+    const lib = new Library(libName);
+
+    const ISBN = '1234567890';
+    const publicationYear = 2000; // Adjust as needed
+    const testBook = new Book(ISBN, 'Web Development', 'Ian Goodfellow', publicationYear);
+    const usr = new User('Darshil');
+
+    lib.addBook(testBook, usr);
+    // Access the private bookContainer property via reflection-like approach
+    const bookContainer = lib.bookContainer;
+
+    expect(bookContainer.has(testBook)).toBe(true);
+    expect(bookContainer.get(testBook)).toBe(1);
+
+    expect(() => lib.borrowBook(testBook, usr)).not.toThrow();
+    expect(bookContainer.get(testBook)).toBe(0);
   });
 });

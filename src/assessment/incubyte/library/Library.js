@@ -5,12 +5,15 @@ import User from "../user/User";
 import InvalidBookException from "../exception/InvalidBookException";
 import InvalidUserException from "../exception/InvalidUserException";
 import LibraryInitialisationException from "../exception/LibraryInitialisationException";
+import IllegalArgumentException from "../exception/IllegalArgumentException";
 
 class Library extends LibraryFunctionalitiesForBook {
   constructor(...args) {
     super();
     if (args.length === 0) {
-      throw new LibraryInitialisationException("Can't Create Library Without Name Parameter");
+      throw new LibraryInitialisationException(
+        "Can't Create Library Without Name Parameter"
+      );
     }
 
     if (args.length === 1) {
@@ -20,10 +23,14 @@ class Library extends LibraryFunctionalitiesForBook {
         this.bookContainer = new Map(); // Initialize the book container
         this.userCollection = new Set(); // For storing registered users
       } else {
-        throw new LibraryInitialisationException("Library name must be at least 4 characters long");
+        throw new LibraryInitialisationException(
+          "Library name must be at least 4 characters long"
+        );
       }
     } else if (args.length > 1) {
-      throw new LibraryInitialisationException("Library Constructor should be called with exactly one argument(i:e Library name)");
+      throw new LibraryInitialisationException(
+        "Library Constructor should be called with exactly one argument(i:e Library name)"
+      );
     }
   }
 
@@ -74,6 +81,10 @@ class Library extends LibraryFunctionalitiesForBook {
     throw new BookNotAvailableException(book);
   }
 
+  throwBothArgNotAvailableException(book) {
+    throw new IllegalArgumentException(book);
+  }
+
   borrowBook(book, usr) {
     if (this.isValidUser(usr) && this.isValidBook(book)) {
       if (this.doesBookHaveEntryInContainer(book)) {
@@ -82,7 +93,21 @@ class Library extends LibraryFunctionalitiesForBook {
         this.throwBookNotAvailableException(book);
       }
     } else {
-      this.throwInvalidBookException("Book Parameter Is Either Null Or Invalid");
+      if (!this.isValidBook(book) && !this.isValidUser(usr)) {
+        this.throwBothArgNotAvailableException(
+          "Book Parameter Is Either Null Or Invalid"
+        );
+      }
+      else if (!this.isValidBook(book)) {
+        this.throwInvalidBookException(
+          "Book Parameter Is Either Null Or Invalid"
+        );
+      }
+      else{
+        this.throwInvalidUserException(
+          "User Parameter Is Either Null Or Invalid"
+        );
+      }
     }
     return false;
   }

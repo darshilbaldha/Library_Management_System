@@ -85,7 +85,7 @@ class Book {
   }
 
   hashCode() {
-    return this.ISBN.spltest("").reduce((acc, val) => acc + val.charCodeAt(0), 0);
+    return this.ISBN.split("").reduce((acc, val) => acc + val.charCodeAt(0), 0);
   }
 
   toString() {
