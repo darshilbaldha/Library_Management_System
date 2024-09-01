@@ -2,6 +2,7 @@ import Library from "../../src/assessment/incubyte/library/Library";
 import User from "../../src/assessment/incubyte/user/User";
 import Book from "../../src/assessment/incubyte/book/Book";
 import DemoTestBookObjectStore from "../bookTest/DemoTestBookObjectStore";
+import DemoTestUserObjectStore from "../userTest/DemoTestUserObjectStore";
 import BookNotAvailableException from "../../src/assessment/incubyte/exception/BookNotAvailableException";
 import InvalidBookException from "../../src/assessment/incubyte/exception/InvalidBookException";
 import InvalidUserException from "../../src/assessment/incubyte/exception/InvalidUserException";
@@ -327,7 +328,7 @@ describe("Library Tests", () => {
   });
 
   test("should accept book object and ISBN for borrowing books", () => {
-    const libName = "Test Library";
+    const libName = "New Library";
     const lib = new Library(libName);
     const usr = DemoTestUserObjectStore.getUserObject(4);
     const testBook = DemoTestBookObjectStore.getBookObject(6);

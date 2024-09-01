@@ -53,17 +53,17 @@ class Library extends LibraryFunctionalitiesForBook {
 
   addBook(book, usr) {
     if (!this.isValidBook(book) && !this.isValidUser(usr)) {
-      this.throwBothArgNotAvailableException(
+      throw new IllegalArgumentException(
         "Both Parameters Are Either Null Or Invalid"
       );
     }
     if (!this.isValidUser(usr)) {
-      this.throwInvalidUserException(
+      throw new InvalidUserException(
         "User Parameter Is Either Null Or Invalid"
       );
     }
     if (!this.isValidBook(book)) {
-      this.throwInvalidBookException(
+      throw new InvalidBookException(
         "Book Parameter Is Either Null Or Invalid"
       );
     }
@@ -78,60 +78,94 @@ class Library extends LibraryFunctionalitiesForBook {
     return true;
   }
 
-  borrowBook(book, usr) {
-    if (!this.isValidBook(book) && !this.isValidUser(usr)) {
-      this.throwBothArgNotAvailableException(
+  borrowBook(param, usr) {
+    if (!this.isValidBook(param) && !this.isValidUser(usr)) {
+      throw new IllegalArgumentException(
         "Both Parameters Are Either Null Or Invalid"
       );
     }
-    if (!this.isValidUser(usr)) {
-      this.throwInvalidUserException(
-        "User Parameter Is Either Null Or Invalid"
-      );
-    }
-    if (!this.isValidBook(book)) {
-      this.throwInvalidBookException(
+    const paramType = this.isABookOrAnISBN(param);
+    let book = null;
+
+    if (paramType === null) {
+      throw new InvalidBookException(
         "Book Parameter Is Either Null Or Invalid"
       );
     }
+    if (!this.isValidUser(usr)) {
+      throw new InvalidUserException(
+        "User Parameter Is Either Null Or Invalid"
+      );
+    }
+    if (paramType === "Book") {
+      book = param;
+    } else if (paramType === "ISBN") {
+      const ISBN = param;
+      book = this.getBookByISBN(ISBN);
+    }
+    if (!this.isValidBook(book)) {
+      throw new InvalidBookException("Book/ISBN Is Either Null Or Invalid");
+    }
     if (!this.isBookAvailableToBorrow(book)) {
-      this.throwBookNotAvailableException(book);
+      throw new BookNotAvailableException(book);
     }
     if (!this.isEligibleToBorrow(usr, book)) {
-      this.throwBorrowLimitExceededException(
-        "You have Exceeded The Number Of Books Allowed To Borrow. Please Return Any Of Your Previous Books To Continue"
+      throw new BorrowLimitExceededException(
+        "You have exceeded the number of books allowed to borrow. Please return any of your previous books to continue."
       );
     }
     if (this.isNewUser(usr)) {
       this.registerNewUser(usr);
     }
     this.decrementBookCount(book);
-    this.addBorrowEntry(book, usr);
+    this.addBorrowEntry(usr, book);
     return true;
   }
 
   returnBook(book, usr) {
     if (!this.isValidBook(book) && !this.isValidUser(usr)) {
-      this.throwBothArgNotAvailableException(
+      throw new IllegalArgumentException(
         "Both Parameters Are Either Null Or Invalid"
       );
     }
     if (!this.isValidUser(usr)) {
-      this.throwInvalidUserException(
+      throw new InvalidUserException(
         "User Parameter Is Either Null Or Invalid"
       );
     }
     if (!this.isValidBook(book)) {
-      this.throwInvalidBookException(
+      throw new InvalidBookException(
         "Book Parameter Is Either Null Or Invalid"
       );
     }
     if (!this.isUserEligibleToReturnThisBook(book, usr)) {
-      this.throwInvalidReturnAttemptException(book, usr);
+      throw new InvalidReturnAttemptException(book, usr);
     }
     this.incrementBookCount(book);
     this.removeBorrowEntry(book, usr);
     return true;
+  }
+
+  getBookByISBN(ISBN) {
+    for (const book of this.bookContainer.keys()) {
+      if (book.getISBN() === ISBN) {
+        return book;
+      }
+    }
+    return null;
+  }
+
+  isABookOrAnISBN(param) {
+    if (param === null) {
+      return null;
+    }
+    if (param instanceof Book) {
+      return "Book";
+    }
+    if (typeof param === "string") {
+      return "ISBN";
+    }
+    return null;
   }
 
   getAvlBooks() {
@@ -169,7 +203,6 @@ class Library extends LibraryFunctionalitiesForBook {
     }
     this.bookContainer.set(book, currentCount - 1);
   }
-  
 
   addBookToContainer(book) {
     this.bookContainer.set(book, 1);
@@ -187,55 +220,25 @@ class Library extends LibraryFunctionalitiesForBook {
     this.userCollection.add(usr);
   }
 
-  addBorrowEntry(book, usr) {
+  addBorrowEntry(usr, book) {
     let borrowedBookList = this.borrowedBooksRecord.get(usr);
     if (!borrowedBookList) {
       borrowedBookList = [];
       this.borrowedBooksRecord.set(usr, borrowedBookList);
     }
-  
+
     if (borrowedBookList.length >= this.MAX_BOOK_ALLOWED_TO_BORROW) {
       throw new BorrowLimitExceededException("Exceeded borrowing limit.");
     }
-  
+
     borrowedBookList.push(book);
   }
-  
 
   isEligibleToBorrow(usr, book) {
-    const borrowedBooks = this.borrowedBooksRecord.get(usr);
-  
-    if (!borrowedBooks) {
-      return true; // New user or no books borrowed yet
-    }
-  
-    if (borrowedBooks.length >= this.MAX_BOOK_ALLOWED_TO_BORROW) {
-      return false; // Exceeded borrowing limit
-    }
-  
-    return !borrowedBooks.includes(book); // Book should not be already borrowed
+    const borrowedBooks = this.borrowedBooksRecord.get(usr) || [];
+    return borrowedBooks.length < this.MAX_BOOK_ALLOWED_TO_BORROW && !borrowedBooks.includes(book);
   }
   
-
-  throwInvalidUserException(errMsg) {
-    throw new InvalidUserException(errMsg);
-  }
-
-  throwInvalidBookException(errMsg) {
-    throw new InvalidBookException(errMsg);
-  }
-  throwBookNotAvailableException(book) {
-    throw new BookNotAvailableException(book);
-  }
-
-  throwBorrowLimitExceededException(errMsg) {
-    throw new BorrowLimitExceededException(errMsg);
-  }
-
-  throwBothArgNotAvailableException(errMsg) {
-    throw new IllegalArgumentException(errMsg);
-  }
-
   isUserEligibleToReturnThisBook(book, usr) {
     if (!this.doesBookHaveEntryInContainer(book)) {
       return false;
@@ -257,16 +260,14 @@ class Library extends LibraryFunctionalitiesForBook {
     }
   }
 
-  throwInvalidReturnAttemptException(book, usr) {
-    throw new InvalidReturnAttemptException(book, usr);
-  }
-
   getRegisteredUsers() {
     return this.userCollection;
   }
+
   getBorrowedBooksRecord() {
     return this.borrowedBooksRecord;
   }
+
   getBookContainer() {
     return this.bookContainer;
   }
