@@ -1,5 +1,6 @@
 import LibraryFunctionalitiesForBook from "./LibraryFunctionalitiesForBook"; // Adjust the path as necessary
-import Book from "../Book/Book";
+import BookNotAvailableException from "../exception/BookNotAvailableException";
+import Book from "../book/Book";
 import User from "../user/User";
 
 class Library extends LibraryFunctionalitiesForBook {
@@ -55,11 +56,14 @@ class Library extends LibraryFunctionalitiesForBook {
     if(user === null && book === null){
       throw new Error("Book and User must not be null");
     }
-    else if (user === null) {
+    else  if (user === null) {
       throw new Error("User must not be null");
     } else if (book === null) {
       throw new Error("Book must not be null");
     } else {
+      if (!this.bookContainer.has(book)) {
+        throw new BookNotAvailableException(book);
+      }
       return true;
     }
   }
