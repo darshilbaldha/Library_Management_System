@@ -89,23 +89,25 @@ class Library extends LibraryFunctionalitiesForBook {
     if (this.isValidUser(usr) && this.isValidBook(book)) {
       if (this.doesBookHaveEntryInContainer(book)) {
         const currBookCount = this.bookContainer.get(book);
-        this.bookContainer.set(book, currBookCount - 1);
-        return true;
-    } else {
+        if (currBookCount > 0) {
+          this.bookContainer.set(book, currBookCount - 1);
+          return true;
+        } else {
+          return false;
+        }
+      } else {
         this.throwBookNotAvailableException(book);
-    }
+      }
     } else {
       if (!this.isValidBook(book) && !this.isValidUser(usr)) {
         this.throwBothArgNotAvailableException(
           "Book Parameter Is Either Null Or Invalid"
         );
-      }
-      else if (!this.isValidBook(book)) {
+      } else if (!this.isValidBook(book)) {
         this.throwInvalidBookException(
           "Book Parameter Is Either Null Or Invalid"
         );
-      }
-      else{
+      } else {
         this.throwInvalidUserException(
           "User Parameter Is Either Null Or Invalid"
         );
