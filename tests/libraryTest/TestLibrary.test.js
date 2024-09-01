@@ -26,8 +26,10 @@ describe("Library Tests", () => {
     expect(lib.getName()).toBe(libName);
   });
 
-  test('should throw LibraryInitialisationException with multiple arguments', () => {
-    expect(() => new Library('New Library', 'Gujarat University Library')).toThrow(LibraryInitialisationException);
+  test("should throw LibraryInitialisationException with multiple arguments", () => {
+    expect(
+      () => new Library("New Library", "Gujarat University Library")
+    ).toThrow(LibraryInitialisationException);
   });
 
   test("Testing Initialization Of Object with getName Function", () => {
@@ -63,7 +65,7 @@ describe("Library Tests", () => {
     const libName = "New Library";
     const lib = new Library(libName);
     const ISBN = "1234567890";
-    const publicationYear = 2000; 
+    const publicationYear = 2000;
     const testBook = new Book(
       ISBN,
       "Web Development",
@@ -77,28 +79,38 @@ describe("Library Tests", () => {
     expect(avlBookList[0]).toEqual(testBook);
   });
 
-  test('should return false if addBook is called with null book', () => {
+  test("should return false if addBook is called with null book", () => {
     const libName = "New Library";
     const lib = new Library(libName);
     const usr = new User("Darshil");
     expect(lib.addBook(null, usr)).toBe(false);
   });
 
-  test('should return false if addBook is called with null user', () => {
-    const libName = 'New Library';
+  test("should return false if addBook is called with null user", () => {
+    const libName = "New Library";
     const lib = new Library(libName);
-    const ISBN = '1234567890';
+    const ISBN = "1234567890";
     const publicationYear = 2000;
-    const testBook = new Book(ISBN, 'Web Development', 'Ian Goodfellow', publicationYear);
+    const testBook = new Book(
+      ISBN,
+      "Web Development",
+      "Ian Goodfellow",
+      publicationYear
+    );
     expect(lib.addBook(testBook, null)).toBe(false);
   });
 
-  test('should throw InvalidUserException when borrowBook is called with null user', () => {
-    const libName = 'New Library';
+  test("should throw InvalidUserException when borrowBook is called with null user", () => {
+    const libName = "New Library";
     const lib = new Library(libName);
-    const ISBN = '1234567890';
+    const ISBN = "1234567890";
     const publicationYear = 2000;
-    const testBook = new Book(ISBN, 'Web Development', 'Ian Goodfellow', publicationYear);
+    const testBook = new Book(
+      ISBN,
+      "Web Development",
+      "Ian Goodfellow",
+      publicationYear
+    );
     expect(() => lib.borrowBook(testBook, null)).toThrow(InvalidUserException);
   });
   test("addBook method should not add duplicate books again", () => {
@@ -147,39 +159,49 @@ describe("Library Tests", () => {
     expect(userList.has(usr)).toBe(true);
   });
 
-
-
-  test('should throw InvalidBookException when borrowBook is called with null book', () => {
-    const libName = 'New Library';
+  test("should throw InvalidBookException when borrowBook is called with null book", () => {
+    const libName = "New Library";
     const lib = new Library(libName);
-    const usr = new User('Biswojit');
+    const usr = new User("Biswojit");
     expect(() => lib.borrowBook(null, usr)).toThrow(InvalidBookException);
   });
 
-  test('should throw IllegalArgumentException when borrowBook is called with null book and user', () => {
-    const libName = 'New Library';
+  test("should throw IllegalArgumentException when borrowBook is called with null book and user", () => {
+    const libName = "New Library";
     const lib = new Library(libName);
     expect(() => lib.borrowBook(null, null)).toThrow(IllegalArgumentException);
   });
 
-  test('should throw BookNotAvailableException when borrowBook is called with empty bookContainer', () => {
-    const libName = 'New Library';
+  test("should throw BookNotAvailableException when borrowBook is called with empty bookContainer", () => {
+    const libName = "New Library";
     const lib = new Library(libName);
-    const ISBN = '1234567890';
+    const ISBN = "1234567890";
     const publicationYear = 2000;
-    const testBook = new Book(ISBN, 'Web Development', 'Ian Goodfellow', publicationYear);
-    const usr = new User('Biswojit');
-    expect(() => lib.borrowBook(testBook, usr)).toThrow(BookNotAvailableException);
+    const testBook = new Book(
+      ISBN,
+      "Web Development",
+      "Ian Goodfellow",
+      publicationYear
+    );
+    const usr = new User("Biswojit");
+    expect(() => lib.borrowBook(testBook, usr)).toThrow(
+      BookNotAvailableException
+    );
   });
 
-  test('borrowBook method should decrement book count by 1 when called with proper parameters', () => {
-    const libName = 'New Library';
+  test("borrowBook method should decrement book count by 1 when called with proper parameters", () => {
+    const libName = "New Library";
     const lib = new Library(libName);
 
-    const ISBN = '1234567890';
+    const ISBN = "1234567890";
     const publicationYear = 2000; // Adjust as needed
-    const testBook = new Book(ISBN, 'Web Development', 'Ian Goodfellow', publicationYear);
-    const usr = new User('Darshil');
+    const testBook = new Book(
+      ISBN,
+      "Web Development",
+      "Ian Goodfellow",
+      publicationYear
+    );
+    const usr = new User("Darshil");
 
     lib.addBook(testBook, usr);
     // Access the private bookContainer property via reflection-like approach
@@ -192,19 +214,25 @@ describe("Library Tests", () => {
     expect(bookContainer.get(testBook)).toBe(0);
   });
 
-  test('borrowBook method does not decrement book count when count is already zero', () => {
-    const libName = 'New Library';
+  test("borrowBook method does not decrement book count when count is already zero", () => {
+    const libName = "New Library";
     const lib = new Library(libName);
-    const ISBN = '1234567890';
-    const publicationYear = 2000; // Assuming Year is a simple number in JavaScript
-    const testBook = new Book(ISBN, 'Web Development', 'Ian Goodfellow', publicationYear);
-    const usr = new User('Darshil');
+    const ISBN = "1234567890";
+    const publicationYear = 2000; // Assume the publication year is just a number for simplicity
+    const testBook = new Book(
+      ISBN,
+      "Web Development",
+      "Ian Goodfellow",
+      publicationYear
+    );
+    const usr = new User("Darshil");
     lib.addBook(testBook, usr);
-    const bookContainer = lib.bookContainer;
-    expect(bookContainer.has(testBook)).toBe(true);
+    const bookContainer = lib.bookContainer; 
     expect(bookContainer.get(testBook)).toBe(1);
-    expect(() => lib.borrowBook(testBook, usr)).not.toThrow();
-    expect(() => lib.borrowBook(testBook, usr)).not.toThrow();
+    lib.borrowBook(testBook, usr);
     expect(bookContainer.get(testBook)).toBe(0);
-});
+    expect(() => lib.borrowBook(testBook, usr)).toThrow(
+      BookNotAvailableException
+    );
+  });
 });

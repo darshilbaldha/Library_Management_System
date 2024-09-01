@@ -93,7 +93,7 @@ class Library extends LibraryFunctionalitiesForBook {
           this.bookContainer.set(book, currBookCount - 1);
           return true;
         } else {
-          return false;
+          this.throwBookNotAvailableException(book);
         }
       } else {
         this.throwBookNotAvailableException(book);
