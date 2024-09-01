@@ -2,25 +2,28 @@ import LibraryFunctionalitiesForBook from "./LibraryFunctionalitiesForBook"; // 
 import BookNotAvailableException from "../exception/BookNotAvailableException";
 import Book from "../book/Book";
 import User from "../user/User";
+import InvalidBookException from "../exception/InvalidBookException";
+import InvalidUserException from "../exception/InvalidUserException";
+import LibraryInitialisationException from "../exception/LibraryInitialisationException";
 
 class Library extends LibraryFunctionalitiesForBook {
   constructor(...args) {
     super();
     if (args.length === 0) {
-      throw new Error("Library Can't be Created Without Name");
+      throw new LibraryInitialisationException("Can't Create Library Without Name Parameter");
     }
 
-    if (args.length === 1 && typeof args[0] === "string") {
+    if (args.length === 1) {
       const libName = args[0];
       if (this.isNameValid(libName)) {
         this.libName = libName;
         this.bookContainer = new Map(); // Initialize the book container
         this.userCollection = new Set(); // For storing registered users
       } else {
-        throw new Error("Library name must be at least 4 characters long");
+        throw new LibraryInitialisationException("Library name must be at least 4 characters long");
       }
     } else if (args.length > 1) {
-      throw new Error("Constructor should be called with only one argument");
+      throw new LibraryInitialisationException("Library Constructor should be called with exactly one argument(i:e Library name)");
     }
   }
 
@@ -33,40 +36,72 @@ class Library extends LibraryFunctionalitiesForBook {
   }
 
   addBook(book, usr) {
-    if (book != null && usr != null) {
-      try {
-        if (this.bookContainer.has(book)) {
-          const currBookCount = this.bookContainer.get(book);
-          this.bookContainer.set(book, currBookCount + 1);
-        } else {
-          this.bookContainer.set(book, 1);
-          this.userCollection.add(usr);
-        }
+    if (this.isValidUser(usr) && this.isValidBook(book)) {
+      if (this.doesBookHaveEntryInContainer(book)) {
+        const currBookCount = this.bookContainer.get(book);
+        this.bookContainer.set(book, currBookCount + 1);
         return true;
-      } catch (e) {
-        // Handle the exception if needed
-        return false;
+      } else {
+        this.bookContainer.set(book, 1);
+        this.userCollection.add(usr);
+        return true;
       }
-    } else {
-      return false;
     }
+    return false;
   }
 
-  borrowBook(book, user) {
-    if(user === null && book === null){
-      throw new Error("Book and User must not be null");
-    }
-    else  if (user === null) {
-      throw new Error("User must not be null");
-    } else if (book === null) {
-      throw new Error("Book must not be null");
-    } else {
-      if (!this.bookContainer.has(book)) {
-        throw new BookNotAvailableException(book);
-      }
-      return true;
-    }
+  doesBookHaveEntryInContainer(book) {
+    return this.bookContainer.has(book);
   }
+
+  isValidUser(usr) {
+    return usr !== null;
+  }
+
+  isValidBook(book) {
+    return book !== null;
+  }
+
+  throwInvalidUserException(errMsg) {
+    throw new InvalidUserException(errMsg);
+  }
+
+  throwInvalidBookException(errMsg) {
+    throw new InvalidBookException(errMsg);
+  }
+
+  throwBookNotAvailableException(book) {
+    throw new BookNotAvailableException(book);
+  }
+
+  borrowBook(book, usr) {
+    if (this.isValidUser(usr) && this.isValidBook(book)) {
+      if (this.doesBookHaveEntryInContainer(book)) {
+        return true;
+      } else {
+        this.throwBookNotAvailableException(book);
+      }
+    } else {
+      this.throwInvalidBookException("Book Parameter Is Either Null Or Invalid");
+    }
+    return false;
+  }
+
+  // borrowBook(book, user) {
+  //   if(user === null && book === null){
+  //     throw new Error("Book and User must not be null");
+  //   }
+  //   else  if (user === null) {
+  //     throw new Error("User must not be null");
+  //   } else if (book === null) {
+  //     throw new Error("Book must not be null");
+  //   } else {
+  //     if (!this.bookContainer.has(book)) {
+  //       throw new BookNotAvailableException(book);
+  //     }
+  //     return true;
+  //   }
+  // }
 
   returnBook(book, usr) {
     throw new Error("Method 'returnBook' is not implemented");
