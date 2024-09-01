@@ -141,9 +141,11 @@ class Library extends LibraryFunctionalitiesForBook {
 
   logTheRecord(book, usr) {
     let borrowedBookList = this.borrowedBooksRecord.get(usr);
-    if (borrowedBookList === undefined) {
+    
+    if (!borrowedBookList) {
       borrowedBookList = [];
     }
+    
     borrowedBookList.push(book);
     this.borrowedBooksRecord.set(usr, borrowedBookList);
   }

@@ -299,28 +299,59 @@ describe("Library Tests", () => {
     expect(borrowedBooksRecord.has(usr)).toBe(true);
     expect(borrowedBooksRecord.get(usr)).toContain(testBook);
   });
-  test('borrowBook method limits the max borrowing numbers to specified value', () => {
+  test("borrowBook method limits the max borrowing numbers to specified value", () => {
     const libName = "Rollwala Library";
     const lib = new Library(libName);
 
     const ISBN = "1234567890";
     const publicationYear = 2000;
-    const testBook = new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear);
+    const testBook = new Book(
+      ISBN,
+      "Deep Learning",
+      "Ian Goodfellow",
+      publicationYear
+    );
     const usr = new User("Biswojit");
 
     const maxBooksAllowedToBorrow = lib.getMaxBooksAllowedToBorrow();
-    
+
     // Add books to the library
     for (let i = 0; i < maxBooksAllowedToBorrow + 2; i++) {
       lib.addBook(testBook, usr);
     }
-    
+
     // Borrow books until the limit is reached
     for (let i = 0; i < maxBooksAllowedToBorrow; i++) {
       lib.borrowBook(testBook, usr);
     }
 
     // Expect an exception to be thrown when borrowing exceeds the limit
-    expect(() => lib.borrowBook(testBook, usr)).toThrow(BorrowLimitExceededException);
+    expect(() => lib.borrowBook(testBook, usr)).toThrow(
+      BorrowLimitExceededException
+    );
+  });
+
+  test("returnBook method throws exceptions for invalid arguments", () => {
+    const libName = "New Library";
+    const lib = new Library(libName);
+
+    const ISBN = "1234567890";
+    const publicationYear = 2000; // Adjust as needed
+    const testBook = new Book(
+      ISBN,
+      "WEb Development",
+      "Ian Goodfellow",
+      publicationYear
+    );
+    const usr = new User("Darshil");
+
+    // Check for InvalidUserException when user is null
+    expect(() => lib.returnBook(testBook, null)).toThrow(InvalidUserException);
+
+    // Check for InvalidBookException when book is null
+    expect(() => lib.returnBook(null, usr)).toThrow(InvalidBookException);
+
+    // Check for IllegalArgumentException when both parameters are null
+    expect(() => lib.borrowBook(null, null)).toThrow(IllegalArgumentException);
   });
 });
