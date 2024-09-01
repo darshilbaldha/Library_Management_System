@@ -90,8 +90,15 @@ class Library extends LibraryFunctionalitiesForBook {
   }
 
   returnBook(book, usr) {
-    throw new Error("Method 'returnBook' is not implemented");
+    if (!this.isValidUser(usr)) {
+      this.throwInvalidUserException("User Parameter Is Either Null Or Invalid");
+    }
+    if (!this.isValidBook(book)) {
+      this.throwInvalidBookException("Book Parameter Is Either Null Or Invalid");
+    }
+    return true;
   }
+  
 
   getAvlBooks() {
     return Array.from(this.bookContainer.keys());

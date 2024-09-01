@@ -354,4 +354,19 @@ describe("Library Tests", () => {
     // Check for IllegalArgumentException when both parameters are null
     expect(() => lib.borrowBook(null, null)).toThrow(IllegalArgumentException);
   });
+
+  test('returnBook method throws expected exceptions for invalid scenarios', () => {
+    const libName = "Rollwala Library";
+    const lib = new Library(libName);
+  
+    const ISBN = "1234567890";
+    const publicationYear = 2000;
+    const testBook = new Book(ISBN, "Deep Learning", "Ian Goodfellow", publicationYear);
+    const usr = new User("Biswojit");
+  
+    expect(() => lib.returnBook(testBook, null)).toThrow(InvalidUserException);
+    expect(() => lib.returnBook(null, usr)).toThrow(InvalidBookException);
+    expect(() => lib.returnBook(null, null)).toThrow(IllegalArgumentException);
+  });
+  
 });
